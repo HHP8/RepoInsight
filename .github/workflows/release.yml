@@ -31,7 +31,7 @@ jobs:
         run: python -c "import os, tomllib; tag=os.environ['GITHUB_REF_NAME']; version=tomllib.load(open('pyproject.toml','rb'))['project']['version']; assert tag == f'v{version}', (tag, version)"
       - run: python -m build
       - run: python -m twine check dist/*
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: distributions
           path: dist/
