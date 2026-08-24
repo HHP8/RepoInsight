@@ -63,8 +63,9 @@ def test_successful_git_history_inspection_preserves_repository_metadata(tmp_pat
             "GIT_CONFIG_GLOBAL": os.devnull,
         }
     )
+    git = ["git", "-c", "safe.directory=*", "-c", "maintenance.auto=false"]
     subprocess.run(
-        ["git", "-c", "safe.directory=*", "init", "-b", "main"],
+        [*git, "init", "-b", "main"],
         cwd=tmp_path,
         check=True,
         capture_output=True,
@@ -72,14 +73,14 @@ def test_successful_git_history_inspection_preserves_repository_metadata(tmp_pat
     )
     (tmp_path / "tracked.txt").write_text("tracked", encoding="utf-8")
     subprocess.run(
-        ["git", "-c", "safe.directory=*", "add", "tracked.txt"],
+        [*git, "add", "tracked.txt"],
         cwd=tmp_path,
         check=True,
         capture_output=True,
         env=environment,
     )
     subprocess.run(
-        ["git", "-c", "safe.directory=*", "commit", "-m", "fixed"],
+        [*git, "commit", "-m", "fixed"],
         cwd=tmp_path,
         check=True,
         capture_output=True,
