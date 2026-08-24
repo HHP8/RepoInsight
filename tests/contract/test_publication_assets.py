@@ -112,6 +112,27 @@ def test_ci_matrix_and_release_workflow_cover_supported_contract() -> None:
     assert "refs/tags/v" in release
 
 
+def test_release_workflow_separates_tag_builds_from_manual_pypi_publication() -> None:
+    release = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    build, publish = release.split("\n  publish:\n", maxsplit=1)
+    publish_gate, publish_steps = publish.split("\n    steps:\n", maxsplit=1)
+
+    assert "workflow_dispatch:" in release
+    assert "github.event_name == 'push'" in build
+    assert "github.event_name == 'workflow_dispatch'" in build
+    assert "github.event_name == 'workflow_dispatch'" in publish_gate
+    assert "github.ref_type == 'tag'" in publish_gate
+    assert "needs.build.result == 'success'" in publish_gate
+    assert "id-token: write" not in build
+    assert "id-token: write" in publish_gate
+    assert release.count("id-token: write") == 1
+    assert "refs/tags/$GITHUB_REF_NAME" in publish_steps
+    assert "tag == f'v{version}'" in publish_steps
+    assert "pypa/gh-action-pypi-publish" not in build
+    assert "pypa/gh-action-pypi-publish" in publish_steps
+    assert release.count("pypa/gh-action-pypi-publish") == 1
+
+
 def test_public_tree_omits_internal_execution_ledger() -> None:
     assert not (ROOT / "plan.md").exists()
     metadata = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
