@@ -8,22 +8,29 @@ RepoInsight 1.0 is a cross-platform Python CLI that produces deterministic repos
 
 RepoInsight requires Python 3.11 or newer.
 
-Until the first PyPI release is published, install from a source checkout:
-
-```console
-python -m venv .venv
-.venv\Scripts\python -m pip install .
-.venv\Scripts\repoinsight version
-```
-
-On macOS or Linux, use `.venv/bin/python` and `.venv/bin/repoinsight`.
-
-After publication to PyPI, the recommended isolated installation is:
+Install the current stable release from [PyPI](https://pypi.org/project/repoinsight/) with
+`pipx` so the command runs in an isolated environment:
 
 ```console
 pipx install repoinsight
 repoinsight version
 ```
+
+Upgrade an existing `pipx` installation with:
+
+```console
+pipx upgrade repoinsight
+```
+
+Alternatively, install RepoInsight into the current Python environment:
+
+```console
+python -m pip install repoinsight
+repoinsight version
+```
+
+RepoInsight 1.0.0 is also available from its
+[GitHub Release](https://github.com/HHP8/RepoInsight/releases/tag/v1.0.0).
 
 ## Quick start
 
@@ -57,14 +64,28 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 - [Release process](docs/release.md)
 - [Support](SUPPORT.md)
 
-## Development
+## Development from a source checkout
+
+Use an editable installation with the development dependency group. On Windows:
 
 ```console
-python -m pip install -e . --group dev
-python -m pytest -q
-python -m ruff format --check .
-python -m ruff check .
-python -m mypy src tests tools benchmarks
+python -m venv .venv
+.venv\Scripts\python -m pip install -e . --group dev
+.venv\Scripts\python -m pytest -q
+.venv\Scripts\python -m ruff format --check .
+.venv\Scripts\python -m ruff check .
+.venv\Scripts\python -m mypy src tests tools benchmarks
+```
+
+On macOS or Linux:
+
+```console
+python3 -m venv .venv
+.venv/bin/python -m pip install -e . --group dev
+.venv/bin/python -m pytest -q
+.venv/bin/python -m ruff format --check .
+.venv/bin/python -m ruff check .
+.venv/bin/python -m mypy src tests tools benchmarks
 ```
 
 The standard test suite needs no network access. The 100,000-line benchmark and live public-repository smoke are opt-in. See [CONTRIBUTING.md](CONTRIBUTING.md).
