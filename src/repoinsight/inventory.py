@@ -712,7 +712,9 @@ def _final_handle_path(descriptor: int) -> Path | None:
         try:
             msvcrt = importlib.import_module("msvcrt")
             handle = msvcrt.get_osfhandle(descriptor)
-            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel32 = ctypes.WinDLL(  # type: ignore[attr-defined, unused-ignore]
+                "kernel32", use_last_error=True
+            )
             get_final_path = kernel32.GetFinalPathNameByHandleW
             buffer = ctypes.create_unicode_buffer(32_768)
             length = get_final_path(handle, buffer, len(buffer), 0)
