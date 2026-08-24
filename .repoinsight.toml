@@ -1,0 +1,45 @@
+[analysis]
+exclude = []
+respect_gitignore = true
+max_file_bytes = 1048576
+max_files = 20000
+max_source_bytes = 104857600
+timeout_seconds = 120
+
+[git]
+remote_history_depth = 500
+clone_timeout_seconds = 60
+
+[scoring.weights]
+maintainability = 25
+testing = 25
+documentation = 15
+security_hygiene = 15
+repository_hygiene = 10
+maintenance = 10
+
+[rules]
+enabled = []
+disabled = []
+
+[thresholds]
+complexity = 15
+function_loc = 75
+class_loc = 500
+module_loc = 1000
+nesting_depth = 5
+duplicate_statements = 8
+test_ratio_medium = 0.10
+test_ratio_low = 0.25
+public_docstring_rate = 0.50
+stale_days = 365
+activity_window_days = 180
+activity_min_commits = 2
+single_contributor_min_age_days = 180
+
+[output]
+format = "all"
+directory = "repoinsight-report"
+
+[ci]
+fail_under = 0

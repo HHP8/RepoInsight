@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a focused, specification-compatible improvement
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user outcome
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed scope
+    validations:
+      required: true
+  - type: checkboxes
+    id: contracts
+    attributes:
+      label: Contract awareness
+      options:
+        - label: I considered CLI, JSON schema, scoring, safety, and documentation compatibility.
+          required: true

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title description">
+  <title id="title">Illustrative RepoInsight standalone HTML report preview</title>
+  <desc id="description">Sanitized illustrative data showing the current dark header, section navigation, completeness summary, category cards, filters, and collapsed prioritized findings.</desc>
+  <rect width="1200" height="675" fill="#f3f6fa"/>
+  <rect width="1200" height="155" fill="#10192b"/>
+  <text x="65" y="42" fill="#b9c8ee" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1.5">REPOINSIGHT 1.0 STATIC ANALYSIS</text>
+  <text x="65" y="88" fill="#ffffff" font-family="system-ui, sans-serif" font-size="40" font-weight="750">Repository health report</text>
+  <text x="65" y="120" fill="#d8e0f1" font-family="system-ui, sans-serif" font-size="16">example/repository · illustrative data</text>
+  <rect x="980" y="25" width="150" height="105" rx="14" fill="#18243b" stroke="#52617e"/>
+  <text x="1055" y="52" text-anchor="middle" fill="#bec9dc" font-family="system-ui, sans-serif" font-size="11" font-weight="700">OVERALL SCORE</text>
+  <text x="1055" y="91" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="37" font-weight="800">82.4</text>
+  <text x="1055" y="115" text-anchor="middle" fill="#eef2fb" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Strong</text>
+
+  <rect y="155" width="1200" height="42" fill="#131e32"/>
+  <g fill="#e9eef9" font-family="system-ui, sans-serif" font-size="12" font-weight="700">
+    <text x="65" y="181" fill="#9facc2">JUMP TO</text><text x="135" y="181">Summary</text><text x="210" y="181">Inventory</text><text x="285" y="181">Metrics</text><text x="345" y="181">Findings</text><text x="415" y="181">Git activity</text><text x="500" y="181">Skipped files</text><text x="600" y="181">Limitations</text>
+  </g>
+
+  <rect x="55" y="220" width="1090" height="72" rx="10" fill="#fff9ec" stroke="#e2c581"/>
+  <rect x="55" y="220" width="6" height="72" rx="3" fill="#b86f06"/>
+  <circle cx="84" cy="255" r="7" fill="#ffe5aa" stroke="#7a4b00" stroke-width="2"/>
+  <text x="105" y="244" fill="#685334" font-family="system-ui, sans-serif" font-size="11" font-weight="700">ANALYSIS COMPLETENESS</text>
+  <text x="105" y="268" fill="#172033" font-family="system-ui, sans-serif" font-size="20" font-weight="750">Partial</text>
+  <text x="300" y="247" fill="#172033" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Some evidence was unavailable.</text>
+  <text x="300" y="269" fill="#584c39" font-family="system-ui, sans-serif" font-size="12">Scores use available evidence; unavailable weights are renormalized.</text>
+
+  <text x="55" y="329" fill="#596986" font-family="system-ui, sans-serif" font-size="11" font-weight="700">AT A GLANCE</text>
+  <text x="55" y="354" fill="#172033" font-family="system-ui, sans-serif" font-size="24" font-weight="750">Category scores</text>
+  <g font-family="system-ui, sans-serif">
+    <g transform="translate(55 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Maintainability</text><circle cx="145" cy="20" r="5" fill="#d7f1e3" stroke="#17633b"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">88.0</text><text x="14" y="79" fill="#566277" font-size="10">Available</text></g>
+    <g transform="translate(239 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Testing</text><circle cx="145" cy="20" r="5" fill="#d7f1e3" stroke="#17633b"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">91.0</text><text x="14" y="79" fill="#566277" font-size="10">Available</text></g>
+    <g transform="translate(423 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Documentation</text><circle cx="145" cy="20" r="5" fill="#d7f1e3" stroke="#17633b"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">84.0</text><text x="14" y="79" fill="#566277" font-size="10">Available</text></g>
+    <g transform="translate(607 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Security hygiene</text><circle cx="145" cy="20" r="5" fill="#d7f1e3" stroke="#17633b"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">79.0</text><text x="14" y="79" fill="#566277" font-size="10">Available</text></g>
+    <g transform="translate(791 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Repository</text><circle cx="145" cy="20" r="5" fill="#d7f1e3" stroke="#17633b"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">83.0</text><text x="14" y="79" fill="#566277" font-size="10">Available</text></g>
+    <g transform="translate(975 370)"><rect width="170" height="92" rx="10" fill="#fff" stroke="#d6dde8"/><text x="14" y="24" fill="#172033" font-size="14" font-weight="700">Maintenance</text><rect x="140" y="15" width="10" height="10" fill="#e3e7ed" stroke="#5b6575"/><text x="14" y="61" fill="#294fc4" font-size="29" font-weight="800">—</text><text x="14" y="79" fill="#566277" font-size="10">Unavailable</text></g>
+  </g>
+
+  <text x="55" y="504" fill="#596986" font-family="system-ui, sans-serif" font-size="11" font-weight="700">PRIORITIZED ACTIONS</text>
+  <text x="55" y="530" fill="#172033" font-family="system-ui, sans-serif" font-size="24" font-weight="750">Findings</text>
+  <rect x="55" y="546" width="1090" height="45" rx="9" fill="#fff" stroke="#d6dde8"/>
+  <rect x="70" y="557" width="150" height="24" rx="5" fill="#fff" stroke="#99a5b8"/><text x="82" y="574" fill="#566277" font-family="system-ui, sans-serif" font-size="11">All severities</text>
+  <rect x="232" y="557" width="150" height="24" rx="5" fill="#fff" stroke="#99a5b8"/><text x="244" y="574" fill="#566277" font-family="system-ui, sans-serif" font-size="11">All categories</text>
+  <rect x="394" y="557" width="430" height="24" rx="5" fill="#fff" stroke="#99a5b8"/><text x="406" y="574" fill="#778397" font-family="system-ui, sans-serif" font-size="11">Search findings</text>
+  <rect x="1010" y="557" width="120" height="24" rx="5" fill="#fff" stroke="#79869a"/><text x="1070" y="574" text-anchor="middle" fill="#27354b" font-family="system-ui, sans-serif" font-size="11" font-weight="700">Reset filters</text>
+
+  <rect x="55" y="606" width="1090" height="48" rx="9" fill="#fff" stroke="#d6dde8"/>
+  <rect x="55" y="606" width="5" height="48" rx="2" fill="#b43742"/>
+  <rect x="75" y="618" width="72" height="22" rx="5" fill="#ffe1e5" stroke="#98263a"/><text x="111" y="633" text-anchor="middle" fill="#98263a" font-family="system-ui, sans-serif" font-size="10" font-weight="800">▲ HIGH</text>
+  <text x="165" y="633" fill="#172033" font-family="system-ui, sans-serif" font-size="14" font-weight="750">Highest-impact finding is shown first</text>
+  <text x="870" y="633" fill="#3e4d64" font-family="system-ui, sans-serif" font-size="11">Confidence: High</text>
+  <text x="1050" y="633" fill="#172033" font-family="system-ui, sans-serif" font-size="12" font-weight="800">−10.0 points</text>
+</svg>

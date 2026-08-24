@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>RepoInsight report - {{ report.source.identity }}</title>
+  <style>{{ css }}</style>
+</head>
+<body>
+  <a class="skip-link" href="#report-content">Skip to report content</a>
+  <header class="hero" id="summary">
+    <div class="hero-copy">
+      <p class="eyebrow">RepoInsight 1.0 static analysis</p>
+      <h1>Repository health report</h1>
+      <p class="source">{{ report.source.identity }}</p>
+      <p class="hero-note">Static, read-only evidence. No repository code was executed.</p>
+    </div>
+    <div class="overall" aria-label="Overall repository score">
+      <span class="overall-label">Overall score</span>
+      {% if report.scorecard.overall_score is not none %}
+      <strong>{{ '%.1f'|format(report.scorecard.overall_score) }}<small>/100</small></strong>
+      <span class="rating">{{ report.scorecard.rating }}</span>
+      {% else %}
+      <strong>—</strong><span class="rating">Unavailable</span>
+      {% endif %}
+    </div>
+  </header>
+
+  <nav class="report-nav" aria-label="Report sections">
+    <div class="report-nav-inner">
+      <span class="nav-label">Jump to</span>
+      <a href="#summary">Summary</a><a href="#inventory">Inventory</a>
+      <a href="#metrics">Metrics</a><a href="#findings">Findings</a>
+      <a href="#git-activity">Git activity</a><a href="#skipped-files">Skipped files</a>
+      <a href="#limitations">Limitations</a>
+    </div>
+  </nav>
+
+  <main id="report-content" tabindex="-1">
+    <section class="summary-panel" aria-labelledby="completeness-heading">
+      <div class="summary-status">
+        <span class="status-mark status-{{ report.completeness.value }}" aria-hidden="true"></span>
+        <div><p class="summary-kicker">Analysis completeness</p><h2 id="completeness-heading">{{ report.completeness.value|title }}</h2></div>
+      </div>
+      <div class="completeness-copy">
+        {% if report.completeness.value == 'available' %}<p>All enabled analyzers completed with the evidence available in this repository.</p>
+        {% elif report.completeness.value == 'partial' %}<p><strong>Some analysis was skipped or incomplete.</strong> Scores use available evidence, so partial category scores may not reflect checks that could not run.</p>
+        {% elif report.completeness.value == 'skipped' %}<p><strong>Analysis was skipped.</strong> Review the skipped-file and limitation details before interpreting the result.</p>
+        {% else %}<p><strong>Analysis evidence is unavailable.</strong> A reliable score could not be calculated for every category.</p>{% endif %}
+        <p class="summary-counts"><a href="#skipped-files">{{ report.skipped_inputs|length }} skipped</a><span aria-hidden="true">·</span><a href="#limitations">{{ report.warnings|length }} warnings</a><span aria-hidden="true">·</span><a href="#limitations">{{ report.limitations|length }} limitations</a></p>
+        <p class="score-method">Unavailable category weights are excluded from the overall calculation; remaining weights are renormalized.</p>
+      </div>
+    </section>
+
+    <section class="report-section" aria-labelledby="scores-heading">
+      <div class="section-heading"><div><p class="section-kicker">At a glance</p><h2 id="scores-heading">Category scores</h2></div><p>Baseline 100 with bounded deductions.</p></div>
+      <div class="score-grid">
+        {% for category in report.scorecard.categories %}
+        <article class="score-card score-card-{{ category.completeness.value }}">
+          <div class="score-card-heading"><h3>{{ category.category.value|replace('_', ' ')|title }}</h3><span class="status-chip" aria-label="Completeness: {{ category.completeness.value }}"><span class="status-mark status-{{ category.completeness.value }}" aria-hidden="true"></span>{{ category.completeness.value|title }}</span></div>
+          <p class="score">{% if category.score is not none %}{{ '%.1f'|format(category.score) }}<small>/100</small>{% else %}—{% endif %}</p>
+          <p class="weight">Overall weight {{ '%.1f'|format(category.weight) }}</p>
+          <details class="score-explanation"><summary>Category scoring explanation</summary>
+            {% if category.completeness.value == 'available' %}<p>All enabled evidence for this category was available.</p>
+            {% elif category.completeness.value == 'partial' %}<p>This score uses available evidence only. Skipped checks may affect how completely it represents the repository.</p>
+            {% elif category.completeness.value == 'skipped' %}<p>This category was not analyzed and its weight was excluded from the overall score.</p>
+            {% else %}<p>No score was calculated, and this category's weight was excluded from the overall score.</p>{% endif %}
+            {% if category.limitations %}<ul>{% for limitation in category.limitations %}<li>{{ limitation }}</li>{% endfor %}</ul>{% endif %}
+          </details>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="report-section" id="inventory" aria-labelledby="inventory-heading">
+      <div class="section-heading"><div><p class="section-kicker">Scope</p><h2 id="inventory-heading">Repository inventory</h2></div><p>Bounded files and source evidence considered.</p></div>
+      <dl class="inventory-grid"><div><dt>Files</dt><dd>{{ report.inventory.total_files }}</dd></div><div><dt>Python files</dt><dd>{{ report.inventory.python_files }}</dd></div><div><dt>Test files</dt><dd>{{ report.inventory.test_files }}</dd></div><div><dt>Python lines</dt><dd>{{ report.inventory.python_lines }}</dd></div></dl>
+    </section>
+
+    <section class="report-section" id="metrics" aria-labelledby="metrics-heading">
+      <div class="section-heading"><div><p class="section-kicker">Measurements</p><h2 id="metrics-heading">Analysis metrics</h2></div><p>Testing, documentation, maintainability, security, and repository indicators.</p></div>
+      <p class="table-hint">Scroll horizontally to view all columns on smaller screens.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Analysis metrics table"><table class="metrics-table"><thead><tr><th>Metric</th><th>Category</th><th>Value</th><th>Completeness</th></tr></thead><tbody>
+      {% for metric in report.metrics %}<tr><td><code>{{ metric.id }}</code></td><td>{{ metric.category.value|replace('_', ' ')|title }}</td><td>{% if metric.value is not none %}{{ metric.value }}{% if metric.unit %} {{ metric.unit }}{% endif %}{% else %}—{% endif %}</td><td><span class="table-status"><span class="status-mark status-{{ metric.completeness.value }}" aria-hidden="true"></span>{{ metric.completeness.value|title }}</span></td></tr>{% endfor %}
+      </tbody></table></div>
+    </section>
+
+    <section class="report-section" id="findings" aria-labelledby="findings-heading">
+      <div class="section-heading"><div><p class="section-kicker">Prioritized actions</p><h2 id="findings-heading">Findings</h2></div><p id="filter-status" aria-live="polite">{{ findings|length }} findings shown, highest impact first</p></div>
+      <form class="filters" aria-label="Finding filters" onsubmit="return false">
+        <div><label for="severity-filter">Severity</label><select id="severity-filter"><option value="all">All severities</option>{% for severity in severities %}<option value="{{ severity.value }}">{{ severity.value|title }}</option>{% endfor %}</select></div>
+        <div><label for="category-filter">Category</label><select id="category-filter"><option value="all">All categories</option>{% for category in categories %}<option value="{{ category.value }}">{{ category.value|replace('_', ' ')|title }}</option>{% endfor %}</select></div>
+        <div class="search"><label for="finding-search">Search findings</label><input id="finding-search" type="search" autocomplete="off" placeholder="Rule, title, path, or evidence"></div>
+        <button id="reset-filters" class="button-secondary" type="button">Reset filters</button>
+      </form>
+      <div class="finding-actions" aria-label="Finding display controls"><button id="expand-findings" type="button">Expand all shown</button><button id="collapse-findings" class="button-secondary" type="button">Collapse all shown</button></div>
+      <div id="findings-list" class="findings-list">
+        {% for finding in findings %}
+        <details class="finding" data-severity="{{ finding.severity.value }}" data-category="{{ finding.category.value }}" data-search="{{ finding.rule_id }} {{ finding.title }} {{ finding.explanation }} {{ finding.evidence }} {{ finding.remediation }} {% if finding.location %}{{ finding.location.path }}{% endif %}">
+          <summary>
+            <span class="finding-summary-main"><span class="badge {{ finding.severity.value }}"><span class="severity-symbol" aria-hidden="true">{% if finding.severity.value == 'critical' %}◆{% elif finding.severity.value == 'high' %}▲{% elif finding.severity.value == 'medium' %}●{% elif finding.severity.value == 'low' %}■{% else %}◇{% endif %}</span>{{ finding.severity.value }}</span><span class="finding-title">{{ finding.title }}</span><code>{{ finding.rule_id }}</code></span>
+            <span class="finding-summary-meta"><span class="confidence confidence-{{ finding.confidence.value }}">Confidence: {{ finding.confidence.value|title }}</span><span class="impact">−{{ '%.1f'|format(finding.score_impact) }} points</span></span>
+            {% if finding.location %}<span class="location"><code>{{ finding.location.path }}:{{ finding.location.start_line }}</code></span>{% endif %}
+          </summary>
+          <div class="finding-body"><div><h3>Why this matters</h3><p>{{ finding.explanation }}</p></div>{% if finding.evidence %}<div class="evidence"><h3>Evidence</h3><p>{{ finding.evidence }}</p></div>{% endif %}<div class="remediation"><h3>Recommended action</h3><p>{{ finding.remediation }}</p></div>{% if finding.limitations %}<div><h3>Finding limitations</h3><ul>{% for limitation in finding.limitations %}<li>{{ limitation }}</li>{% endfor %}</ul></div>{% endif %}</div>
+        </details>
+        {% else %}<div class="state-panel state-success"><h3>No findings emitted</h3><p>No actionable findings were produced from the available evidence.</p></div>{% endfor %}
+        <div id="filtered-empty" class="state-panel" hidden><h3>No findings match these filters</h3><p>Change a filter or reset all filters to return to the complete findings list.</p></div>
+      </div>
+    </section>
+
+    <section class="report-section" id="git-activity" aria-labelledby="git-heading">
+      <div class="section-heading"><div><p class="section-kicker">History</p><h2 id="git-heading">Git activity</h2></div><p><span class="table-status"><span class="status-mark status-{{ report.git.completeness.value }}" aria-hidden="true"></span>{{ report.git.completeness.value|title }}</span> history evidence.</p></div>
+      <dl class="inventory-grid"><div><dt>Commits considered</dt><dd>{{ report.git.commits_considered }}</dd></div><div><dt>Contributors</dt><dd>{{ report.git.contributor_count }}</dd></div><div><dt>First commit</dt><dd class="date-value">{% if report.git.first_commit_at %}{{ report.git.first_commit_at.date().isoformat() }}{% else %}—{% endif %}</dd></div><div><dt>Latest commit</dt><dd class="date-value">{% if report.git.latest_commit_at %}{{ report.git.latest_commit_at.date().isoformat() }}{% else %}—{% endif %}</dd></div></dl>
+      {% if report.git.limitations %}<div class="state-panel state-warning"><h3>Git history limitations</h3><ul>{% for limitation in report.git.limitations %}<li>{{ limitation }}</li>{% endfor %}</ul></div>{% endif %}
+    </section>
+
+    <section class="report-section" aria-labelledby="trace-heading">
+      <div class="section-heading"><div><p class="section-kicker">Audit trail</p><h2 id="trace-heading">Scoring trace</h2></div><p>{{ report.scorecard.rounding }}</p></div>
+      {% for category in report.scorecard.categories %}<details class="trace-details"><summary>{{ category.category.value|replace('_', ' ')|title }}</summary><p class="table-hint">Scroll horizontally to view all columns on smaller screens.</p><div class="table-scroll" tabindex="0" role="region" aria-label="{{ category.category.value|replace('_', ' ')|title }} scoring trace table"><table><thead><tr><th>Rule</th><th>Findings</th><th>Raw</th><th>Applied</th><th>Cap</th></tr></thead><tbody>{% for impact in category.impacts %}<tr><td><code>{{ impact.rule_id }}</code></td><td>{{ impact.finding_count }}</td><td>{{ '%.1f'|format(impact.raw_deduction) }}</td><td>{{ '%.1f'|format(impact.applied_deduction) }}</td><td>{{ '%.1f'|format(impact.cap) }}</td></tr>{% endfor %}</tbody></table></div></details>{% endfor %}
+    </section>
+
+    <section class="report-section" id="skipped-files" aria-labelledby="skipped-heading">
+      <div class="section-heading"><div><p class="section-kicker">Skipped inputs</p><h2 id="skipped-heading">Skipped files</h2></div><p>Inputs that were intentionally not analyzed.</p></div>
+      {% if report.skipped_inputs %}<div class="state-panel state-warning"><h3>{{ report.skipped_inputs|length }} skipped input{% if report.skipped_inputs|length != 1 %}s{% endif %}</h3><p>Skipped content is not represented by affected metrics or findings.</p><ul>{% for skipped in report.skipped_inputs %}<li><code>{{ skipped.path }}</code>: {{ skipped.reason }}</li>{% endfor %}</ul></div>{% else %}<div class="state-panel state-success"><h3>No skipped inputs</h3><p>Every discovered input within the configured analysis bounds was considered.</p></div>{% endif %}
+    </section>
+
+    <section class="report-section" id="limitations" aria-labelledby="limitations-heading">
+      <div class="section-heading"><div><p class="section-kicker">Interpretation</p><h2 id="limitations-heading">Limitations and analyzer status</h2></div><p>Static evidence does not prove runtime quality or security.</p></div>
+      <h3>Analyzer status</h3><ul class="status-list">{% for status in report.analyzer_status %}<li><span class="status-mark status-{{ status.completeness.value }}" aria-hidden="true"></span><strong>{{ status.analyzer_id }}</strong><span>{{ status.state.value|replace('_', ' ')|title }} · {{ status.completeness.value|title }}</span></li>{% endfor %}</ul>
+      <div class="limitation-grid"><div class="state-panel{% if report.warnings %} state-warning{% else %} state-success{% endif %}"><h3>Warnings</h3><ul>{% for warning in report.warnings %}<li><strong>{{ warning.code }}</strong>: {{ warning.message }}</li>{% else %}<li>No analysis warnings were recorded.</li>{% endfor %}</ul></div><div class="state-panel"><h3>Known limitations</h3><ul>{% for limitation in report.limitations %}<li><strong>{{ limitation.code }}</strong>: {{ limitation.message }}</li>{% else %}<li>No additional limitations were recorded.</li>{% endfor %}</ul></div></div>
+    </section>
+  </main>
+  <footer>Generated {{ report.run.generated_at.isoformat() }} · Schema {{ report.schema_version }} · No repository code was executed.</footer>
+  <script>{{ javascript }}</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "elapsed_seconds": 10.688,
+  "implementation": "CPython",
+  "logical_cpus": 8,
+  "platform": "Windows-11-10.0.26220-SP0",
+  "processor": "Intel64 Family 6 Model 142 Stepping 10, GenuineIntel",
+  "python": "3.12.13",
+  "python_lines": 100000,
+  "report_completeness": "partial",
+  "target_met": true,
+  "target_seconds": 30.0
+}

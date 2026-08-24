@@ -1,0 +1,993 @@
+{
+  "$defs": {
+    "AnalyzerState": {
+      "enum": [
+        "succeeded",
+        "partial",
+        "failed",
+        "skipped"
+      ],
+      "title": "AnalyzerState",
+      "type": "string"
+    },
+    "AnalyzerStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "analyzer_id": {
+          "minLength": 1,
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/AnalyzerState"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "elapsed_seconds": {
+          "minimum": 0,
+          "title": "Elapsed Seconds",
+          "type": "number"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        }
+      },
+      "required": [
+        "analyzer_id",
+        "state",
+        "completeness",
+        "elapsed_seconds"
+      ],
+      "title": "AnalyzerStatus",
+      "type": "object"
+    },
+    "Category": {
+      "enum": [
+        "maintainability",
+        "testing",
+        "documentation",
+        "security_hygiene",
+        "repository_hygiene",
+        "maintenance"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "CategoryScoreTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/Category"
+        },
+        "baseline": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Baseline",
+          "type": "number"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Score"
+        },
+        "weight": {
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "impacts": {
+          "items": {
+            "$ref": "#/$defs/RuleImpactTrace"
+          },
+          "title": "Impacts",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "category",
+        "baseline",
+        "score",
+        "weight",
+        "completeness",
+        "impacts",
+        "limitations"
+      ],
+      "title": "CategoryScoreTrace",
+      "type": "object"
+    },
+    "Completeness": {
+      "enum": [
+        "available",
+        "partial",
+        "unavailable",
+        "skipped"
+      ],
+      "title": "Completeness",
+      "type": "string"
+    },
+    "Confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "minLength": 1,
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "analyzer_version": {
+          "minLength": 1,
+          "title": "Analyzer Version",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/Category"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "evidence": {
+          "default": "",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "remediation": {
+          "minLength": 1,
+          "title": "Remediation",
+          "type": "string"
+        },
+        "score_impact": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Score Impact",
+          "type": "number"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "suppressed": {
+          "default": false,
+          "title": "Suppressed",
+          "type": "boolean"
+        },
+        "suppression_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suppression Reason"
+        },
+        "cap_applied": {
+          "default": false,
+          "title": "Cap Applied",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rule_id",
+        "analyzer_id",
+        "analyzer_version",
+        "category",
+        "severity",
+        "title",
+        "explanation",
+        "remediation",
+        "score_impact",
+        "confidence"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "GitSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "available": {
+          "title": "Available",
+          "type": "boolean"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "head_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Head Revision"
+        },
+        "branch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Branch"
+        },
+        "commits_considered": {
+          "minimum": 0,
+          "title": "Commits Considered",
+          "type": "integer"
+        },
+        "contributor_count": {
+          "minimum": 0,
+          "title": "Contributor Count",
+          "type": "integer"
+        },
+        "first_commit_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "First Commit At"
+        },
+        "latest_commit_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Commit At"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "available",
+        "completeness",
+        "head_revision",
+        "branch",
+        "commits_considered",
+        "contributor_count",
+        "first_commit_at",
+        "latest_commit_at"
+      ],
+      "title": "GitSummary",
+      "type": "object"
+    },
+    "Limitation": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Category"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "analyzer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analyzer Id"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "Limitation",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string",
+          "pattern": "^(?!/)(?![A-Za-z]:/)(?!.*\\\\)(?!\\.{1,2}(?:/|$))(?!.*(?:/\\.{1,2})(?:/|$))[^/]+(?:/[^/]+)*$"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Line"
+        },
+        "start_column": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Column"
+        },
+        "end_column": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Column"
+        }
+      },
+      "required": [
+        "path",
+        "start_line"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "Metric": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "minLength": 1,
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/Category"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "provenance": {
+          "minLength": 1,
+          "title": "Provenance",
+          "type": "string"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "analyzer_id",
+        "category",
+        "value",
+        "unit",
+        "provenance",
+        "completeness"
+      ],
+      "title": "Metric",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "completeness": {
+                "enum": [
+                  "unavailable",
+                  "skipped"
+                ]
+              }
+            },
+            "required": [
+              "completeness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "completeness": {
+                "const": "available"
+              }
+            },
+            "required": [
+              "completeness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RepositoryInventory": {
+      "additionalProperties": false,
+      "properties": {
+        "total_files": {
+          "minimum": 0,
+          "title": "Total Files",
+          "type": "integer"
+        },
+        "python_files": {
+          "minimum": 0,
+          "title": "Python Files",
+          "type": "integer"
+        },
+        "test_files": {
+          "minimum": 0,
+          "title": "Test Files",
+          "type": "integer"
+        },
+        "total_bytes": {
+          "minimum": 0,
+          "title": "Total Bytes",
+          "type": "integer"
+        },
+        "source_bytes": {
+          "minimum": 0,
+          "title": "Source Bytes",
+          "type": "integer"
+        },
+        "python_lines": {
+          "minimum": 0,
+          "title": "Python Lines",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total_files",
+        "python_files",
+        "test_files",
+        "total_bytes",
+        "source_bytes",
+        "python_lines"
+      ],
+      "title": "RepositoryInventory",
+      "type": "object"
+    },
+    "RuleImpactTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "finding_count": {
+          "minimum": 0,
+          "title": "Finding Count",
+          "type": "integer"
+        },
+        "raw_deduction": {
+          "minimum": 0,
+          "title": "Raw Deduction",
+          "type": "number"
+        },
+        "applied_deduction": {
+          "minimum": 0,
+          "title": "Applied Deduction",
+          "type": "number"
+        },
+        "cap": {
+          "minimum": 0,
+          "title": "Cap",
+          "type": "number"
+        }
+      },
+      "required": [
+        "rule_id",
+        "finding_count",
+        "raw_deduction",
+        "applied_deduction",
+        "cap"
+      ],
+      "title": "RuleImpactTrace",
+      "type": "object"
+    },
+    "RunMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "elapsed_seconds": {
+          "minimum": 0,
+          "title": "Elapsed Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "generated_at",
+        "elapsed_seconds"
+      ],
+      "title": "RunMetadata",
+      "type": "object"
+    },
+    "Scorecard": {
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "items": {
+            "$ref": "#/$defs/CategoryScoreTrace"
+          },
+          "title": "Categories",
+          "type": "array"
+        },
+        "overall_score": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Overall Score"
+        },
+        "rating": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rating"
+        },
+        "available_weight": {
+          "minimum": 0,
+          "title": "Available Weight",
+          "type": "number"
+        },
+        "rounding": {
+          "minLength": 1,
+          "title": "Rounding",
+          "type": "string"
+        }
+      },
+      "required": [
+        "categories",
+        "overall_score",
+        "rating",
+        "available_weight",
+        "rounding"
+      ],
+      "title": "Scorecard",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "SkippedInput": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string",
+          "pattern": "^(?!/)(?![A-Za-z]:/)(?!.*\\\\)(?!\\.{1,2}(?:/|$))(?!.*(?:/\\.{1,2})(?:/|$))[^/]+(?:/[^/]+)*$"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analyzer Id"
+        }
+      },
+      "required": [
+        "path",
+        "reason"
+      ],
+      "title": "SkippedInput",
+      "type": "object"
+    },
+    "SourceKind": {
+      "enum": [
+        "local",
+        "github"
+      ],
+      "title": "SourceKind",
+      "type": "string"
+    },
+    "SourceMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/SourceKind"
+        },
+        "identity": {
+          "minLength": 1,
+          "title": "Identity",
+          "type": "string"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Revision"
+        },
+        "history_completeness": {
+          "$ref": "#/$defs/Completeness"
+        }
+      },
+      "required": [
+        "kind",
+        "identity",
+        "revision",
+        "history_completeness"
+      ],
+      "title": "SourceMetadata",
+      "type": "object"
+    },
+    "ToolMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_contract_version": {
+          "const": "1.0",
+          "title": "Score Contract Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "schema_version",
+        "score_contract_version"
+      ],
+      "title": "ToolMetadata",
+      "type": "object"
+    },
+    "WarningRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analyzer Id"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "WarningRecord",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_contract_version": {
+      "const": "1.0",
+      "title": "Score Contract Version",
+      "type": "string"
+    },
+    "tool": {
+      "$ref": "#/$defs/ToolMetadata"
+    },
+    "run": {
+      "$ref": "#/$defs/RunMetadata"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceMetadata"
+    },
+    "configuration_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Configuration Fingerprint",
+      "type": "string"
+    },
+    "completeness": {
+      "$ref": "#/$defs/Completeness"
+    },
+    "inventory": {
+      "$ref": "#/$defs/RepositoryInventory"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/Metric"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "scorecard": {
+      "$ref": "#/$defs/Scorecard"
+    },
+    "git": {
+      "$ref": "#/$defs/GitSummary"
+    },
+    "skipped_inputs": {
+      "items": {
+        "$ref": "#/$defs/SkippedInput"
+      },
+      "title": "Skipped Inputs",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "$ref": "#/$defs/WarningRecord"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "analyzer_status": {
+      "items": {
+        "$ref": "#/$defs/AnalyzerStatus"
+      },
+      "title": "Analyzer Status",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "$ref": "#/$defs/Limitation"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "score_contract_version",
+    "tool",
+    "run",
+    "source",
+    "configuration_fingerprint",
+    "completeness",
+    "inventory",
+    "metrics",
+    "findings",
+    "scorecard",
+    "git",
+    "skipped_inputs",
+    "warnings",
+    "analyzer_status",
+    "limitations"
+  ],
+  "title": "AnalysisReport",
+  "type": "object"
+}

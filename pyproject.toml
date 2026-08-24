@@ -1,0 +1,103 @@
+[build-system]
+requires = ["hatchling>=1.32,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "repoinsight"
+version = "1.0.0"
+description = "Safe, deterministic static insight for Python repositories"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [{ name = "RepoInsight contributors" }]
+keywords = ["python", "static-analysis", "repository-health", "cli"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+  "typer>=0.27,<0.28",
+  "pydantic>=2.13,<3",
+  "jsonschema>=4.26,<5",
+  "Jinja2>=3.1.6,<4",
+  "pathspec>=1.1,<2",
+]
+
+[project.scripts]
+repoinsight = "repoinsight.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=9.1,<10",
+  "pytest-cov>=7.1,<8",
+  "ruff>=0.16,<0.17",
+  "mypy>=2.3,<3",
+  "build>=1.5,<2",
+  "hatchling>=1.32,<2",
+  "twine>=7,<8",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/repoinsight"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/repoinsight",
+  "tests",
+  "benchmarks",
+  "tools",
+  "docs",
+  ".github",
+  "pyproject.toml",
+  ".repoinsight.toml",
+  "README.md",
+  "LICENSE",
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "CODE_OF_CONDUCT.md",
+  "SECURITY.md",
+  "SUPPORT.md",
+]
+
+[tool.hatch.build]
+artifacts = ["src/repoinsight/schema/*.json"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers"
+testpaths = ["tests"]
+norecursedirs = ["tests/fixtures"]
+
+[tool.coverage.run]
+branch = true
+source = ["repoinsight"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "tools", "benchmarks"]
+exclude = ["tests/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests", "tools", "benchmarks"]
+plugins = ["pydantic.mypy"]
+exclude = ["tests/fixtures/"]
+
+[[tool.mypy.overrides]]
+module = "jsonschema.*"
+ignore_missing_imports = true
