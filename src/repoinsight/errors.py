@@ -41,3 +41,9 @@ class ReportError(RepoInsightError):
 
 class ConfigurationError(InvalidUsageError):
     """Configuration parsing or validation failed."""
+
+
+class EnrichmentError(RepoInsightError):
+    """Optional AI guidance could not be produced safely."""
+
+    exit_code = ExitCode.ENRICHMENT_FAILED

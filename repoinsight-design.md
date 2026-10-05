@@ -4,6 +4,12 @@
 **Date:** 2026-08-23  
 **Target:** Version 1.0  
 
+**Post-1.0 implementation note:** The development checkout now implements optional
+saved-report AI enrichment described in the [upgrade plan](docs/upgrade-plan.md).
+It creates an explicit `enrich --send` exception to the external-transmission
+boundary below. The version 1 baseline and static scoring/JSON contracts remain
+unchanged. See [AI security and privacy](docs/security.md#optional-ai-enrichment-development-checkout).
+
 ## 1. Purpose
 
 RepoInsight is a cross-platform Python command-line application that analyzes the health of Python repositories. It accepts public GitHub repository URLs and local repository directories, performs deterministic static analysis without executing repository code, and generates both machine-readable JSON and a polished standalone HTML report.

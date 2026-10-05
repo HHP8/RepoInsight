@@ -22,4 +22,5 @@ def test_exit_codes_match_the_public_process_contract() -> None:
         "ACQUISITION_FAILED": 21,
         "ANALYSIS_FAILED": 22,
         "REPORT_FAILED": 23,
+        "ENRICHMENT_FAILED": 24,
     }

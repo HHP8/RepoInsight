@@ -27,3 +27,20 @@ Output ordering is canonical. Runtime timestamps and elapsed durations are inten
 ## Failure behavior
 
 Acquisition and report failures stop with stable exit codes. An individual analyzer failure is isolated, redacted, and disclosed as partial analysis. Missing Git metadata does not block file analysis. Temporary clone cleanup occurs when the acquisition context exits, before report writing.
+
+## Optional AI enrichment
+
+The next-release implementation in `ai/` is a separate saved-report pipeline:
+
+1. `enrich` requires an explicit preview/send mode and model.
+2. A bounded loader validates the unchanged v1 schema and hashes exact input bytes.
+3. An allowlist projection selects trusted rule descriptions and numeric evidence, maps locations to opaque IDs, and enforces request budgets.
+4. Preview serializes that exact request offline; send alone reads the environment credential and calls the fixed OpenAI Responses endpoint.
+5. Structured-output validation rejects unknown references, fields, unsupported citations, and representative unsupported verification claims.
+6. An independent AI model/schema records provenance and advisory guidance. Escaped JSON/HTML sidecars are written without altering the static report.
+
+Provider interfaces and clocks are injectable for tests. HTTPX is imported only in
+send mode. The ordinary installation, analyzer registry, static score contract,
+and static JSON schema remain unchanged. Missing credentials/dependencies are
+usage failures; provider/guidance failures have exit code 24 and record sanitized
+failure status when possible.

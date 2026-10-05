@@ -62,6 +62,10 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 - [Security and privacy](docs/security.md)
 - [Known limitations](docs/limitations.md)
 - [Release process](docs/release.md)
+- [Proposed upgrade plan: AI guidance and future improvements](docs/upgrade-plan.md)
+- [AI enrichment examples (development checkout)](docs/examples/ai-guidance.md)
+- [AI release evaluation](docs/ai-evaluation.md)
+- [Codex Cloud development](docs/codex-cloud.md)
 - [Support](SUPPORT.md)
 
 ## Development from a source checkout
@@ -89,6 +93,28 @@ python3 -m venv .venv
 ```
 
 The standard test suite needs no network access. The 100,000-line benchmark and live public-repository smoke are opt-in. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Optional AI guidance (development checkout)
+
+The next-release implementation can explain a saved report and suggest up to five
+evidence-linked actions. Install the optional transport from this checkout:
+
+```console
+python -m pip install -e '.[ai]'
+repoinsight analyze . --output reports
+repoinsight enrich reports/repoinsight-report.json --preview --model MODEL_ID
+repoinsight enrich reports/repoinsight-report.json --send --model MODEL_ID --output ai-reports
+```
+
+Replace `MODEL_ID` with a model available to your account that supports the OpenAI
+Responses API and Structured Outputs. Set `OPENAI_API_KEY` through your shell or CI
+secret manager before send mode. Preview requires no key or network access and
+prints the exact JSON request; only `--send` transmits selected static evidence.
+Source code, repository identity, Git identities, paths, and repository prose are
+omitted from that request. Paths appear locally in the separate AI JSON/HTML reports.
+Static scores and reports stay unchanged. This feature is not in the published
+1.0.0 package yet; see the [workflow](docs/examples/ai-guidance.md) and
+[privacy details](docs/security.md#optional-ai-enrichment-development-checkout).
 
 ## License
 

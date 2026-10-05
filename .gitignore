@@ -1,4 +1,6 @@
 .codex/config.toml
+.env
+.env.*
 plan.md
 .venv/
 .package-test/
@@ -18,3 +20,10 @@ dist/
 .superpowers/
 demo-report/
 repoinsight-report/
+repoinsight-ai/
+
+# Local implementation workspace and sanitized handoff archives (not source)
+/RepoInsight-ai-mvp/
+/RepoInsight-*.zip
+/RepoInsight-*.zip.sha256
+/local-codex-*.md

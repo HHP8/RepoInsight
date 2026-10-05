@@ -23,3 +23,42 @@ These cases require operating-system-level trust and isolation outside the produ
 ## Reporting a vulnerability
 
 Follow [SECURITY.md](../SECURITY.md). Do not include real credentials, private repository contents, or exploit data in a public issue.
+
+## Optional AI enrichment (development checkout)
+
+The next-release `enrich` command creates an explicit exception to version 1's
+offline analysis boundary. `analyze` remains static and does not call AI. Only
+`enrich --send` transmits data; a saved key or repository TOML cannot enable it.
+`enrich --preview --model MODEL_ID` prints the complete request without a key or
+network access. This code is not yet part of the published 1.0.0 release.
+
+The outbound projection contains trusted built-in rule descriptions, rule IDs,
+severity/confidence, numeric scores, selected numeric/boolean aggregate metrics,
+and completeness/omission counts. It omits raw code, free-form repository text,
+paths, URLs, revisions, timestamps, author identities, and commit messages.
+Opaque evidence IDs map to file locations only in local AI reports. Selected
+metrics and findings can still reveal characteristics of a private project.
+
+The credential comes exclusively from `OPENAI_API_KEY` and is used only in the
+authorization header. RepoInsight rejects keys in request content, redacts the
+exact active key from diagnostics and responses, and applies existing heuristic
+redaction. Neither technique guarantees removal of every confidential value.
+Do not commit keys or preview payloads containing confidential evidence.
+
+The provider uses certificate-verified HTTPS to `api.openai.com/v1/responses`,
+with redirects, environment proxies, and custom endpoints disabled. Requests
+set `store: false`; this is not a guarantee of zero provider retention. Account
+and provider data policies still apply. There is no request cache or telemetry.
+
+The model receives no tools, executable context, source files, or retrieval
+capabilities. Responses have size/field limits, must cite supplied evidence IDs,
+and cannot add score fields. Direct file/line/URL citations are rejected. Model
+prose is escaped into a self-contained HTML report with no active scripts or
+external resources. Suggestions require developer review; no automatic edits
+or test execution occur. Prompt instructions and heuristic prose checks cannot
+prove that every natural-language claim is accurate.
+
+Provider failures leave the static report intact. Each sidecar is written
+atomically; the JSON/HTML pair is not a multi-file transaction. Request retries
+are bounded to one for transient failures, and authentication errors are not
+retried. Token limits do not guarantee an exact monetary cap.

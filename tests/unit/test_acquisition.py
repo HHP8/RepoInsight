@@ -16,7 +16,11 @@ from repoinsight.models import SourceKind
 
 
 def _external_executable() -> str:
-    name = "python.exe" if os.name == "nt" else "bin/python"
+    name = (
+        "python.exe"
+        if os.name == "nt"
+        else f"bin/python{sys.version_info.major}.{sys.version_info.minor}"
+    )
     return str((Path(sys.base_prefix) / name).resolve())
 
 

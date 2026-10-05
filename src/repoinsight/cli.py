@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Callable
 from pathlib import Path
 from typing import Annotated
@@ -16,7 +17,7 @@ from .config import load_config
 from .errors import InvalidUsageError, RepoInsightError
 from .exit_codes import ExitCode
 from .models import AnalysisRequest, OutputFormat, ReportFormat, SourceKind
-from .redaction import safe_exception_message
+from .redaction import REDACTION_MARKER, redact_text, safe_exception_message
 from .reporting.terminal import render_terminal_summary
 from .version import SCHEMA_VERSION, __version__
 
@@ -26,6 +27,13 @@ app = typer.Typer(
     help="Safe, deterministic static insight for Python repositories.",
 )
 _SERVICE_FACTORY: Callable[[], AnalyzeService] = AnalyzeService
+
+
+def _safe_cli_text(text: str) -> str:
+    credential = os.environ.get("OPENAI_API_KEY", "")
+    if credential:
+        text = text.replace(credential, REDACTION_MARKER)
+    return redact_text(text)
 
 
 def _formats(value: str) -> tuple[OutputFormat, ...]:
@@ -142,16 +150,73 @@ def analyze_command(
     return int(outcome.exit_code)
 
 
+@app.command("enrich")
+def enrich_command(
+    report: Annotated[Path, typer.Argument(help="Saved RepoInsight v1 JSON report.")],
+    preview: Annotated[
+        bool, typer.Option("--preview", help="Print the exact request offline.")
+    ] = False,
+    send: Annotated[bool, typer.Option("--send", help="Authorize transmission to OpenAI.")] = False,
+    model: Annotated[
+        str, typer.Option("--model", help="Structured-output Responses API model.")
+    ] = "",
+    output: Annotated[Path, typer.Option("--output", help="Separate AI report directory.")] = Path(
+        "repoinsight-ai"
+    ),
+    max_findings: Annotated[int, typer.Option("--max-findings", min=0, max=20)] = 20,
+    max_input_tokens: Annotated[int, typer.Option("--max-input-tokens", min=1, max=32000)] = 8000,
+    max_output_tokens: Annotated[int, typer.Option("--max-output-tokens", min=1, max=4000)] = 1500,
+    timeout: Annotated[float, typer.Option("--timeout", min=1, max=120)] = 30,
+) -> int:
+    """Preview or explicitly send minimized evidence for advisory AI guidance."""
+    from .ai.payload import prepare_request
+    from .ai.service import EnrichService
+
+    if preview == send:
+        raise InvalidUsageError("Choose exactly one of --preview or --send")
+    if not model:
+        raise InvalidUsageError("--model is required for both preview and send")
+    credential = os.environ.get("OPENAI_API_KEY", "")
+    if credential and credential in model:
+        raise InvalidUsageError("A credential cannot be used as a model identifier")
+    prepared = prepare_request(
+        report,
+        model=model,
+        max_findings=max_findings,
+        max_input_tokens=max_input_tokens,
+        max_output_tokens=max_output_tokens,
+    )
+    typer.echo(
+        f"Conservative input estimate: {prepared.estimated_input_tokens} tokens; "
+        f"omitted findings: {prepared.omitted_findings}; "
+        f"omitted metrics: {prepared.omitted_metrics}. "
+        "Retries may incur charges; this is not an exact price estimate.",
+        err=True,
+    )
+    if preview:
+        typer.echo(prepared.request_json)
+    else:
+        paths = EnrichService().send(
+            prepared,
+            model=model,
+            output_directory=output,
+            base_path=report,
+            timeout_seconds=timeout,
+        )
+        typer.echo(_safe_cli_text("AI guidance written: " + ", ".join(str(path) for path in paths)))
+    return int(ExitCode.SUCCESS)
+
+
 def main(args: list[str] | None = None) -> int:
     """Run the Typer command tree while preserving RepoInsight exit codes."""
     command = typer.main.get_command(app)
     try:
         result = command.main(args=args, prog_name="repoinsight", standalone_mode=False)
     except RepoInsightError as error:
-        typer.echo(f"Error: {safe_exception_message(error)}", err=True)
+        typer.echo(_safe_cli_text(f"Error: {safe_exception_message(error)}"), err=True)
         return int(error.exit_code)
     except (_click.ClickException, typer.Abort) as error:
-        typer.echo(f"Error: {safe_exception_message(error)}", err=True)
+        typer.echo(_safe_cli_text(f"Error: {safe_exception_message(error)}"), err=True)
         return int(ExitCode.INVALID_USAGE)
     return int(result or ExitCode.SUCCESS)
 
