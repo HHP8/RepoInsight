@@ -2,7 +2,7 @@
 
 RepoInsight uses semantic version tags shaped `v1.0.0`. The package, runtime constant, new-report tool version, changelog, docs and tag
 must agree. Schema, score-contract and analyzer identifiers are versioned
-independently: the 1.1 candidate retains their 1.0 contracts/analyzer 1.0.0 metadata.
+independently: 1.1.0 retains their 1.0 contracts/analyzer 1.0.0 metadata.
 Its updated static v1 schema accepts tool metadata 1.0.0 and 1.1.0; saved 1.0 reports
 remain readable, while consumers pinning the old tool-version const need the
 updated schema. Do not globally replace historical version literals.

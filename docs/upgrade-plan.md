@@ -1,6 +1,6 @@
 # RepoInsight upgrade plan
 
-**Status:** Experimental AI MVP accepted; offline 1.1.0 release preparation in progress. Sections below preserve the original proposal and estimates; see implementation status immediately below.
+**Status:** Experimental AI MVP accepted and merged to main; 1.1.0 release documentation finalized. Sections below preserve the original proposal and estimates; see implementation status immediately below.
 **Date:** 2026-10-02  
 **Baseline:** RepoInsight 1.0.0  
 **Recommended next release:** 1.1, optional AI guidance over existing static evidence.
@@ -9,8 +9,9 @@
 
 The optional AI MVP is implemented and the owner accepted its experimental
 limitations on 2026-10-07; see [release acceptance](ai-release-acceptance-2026-10-07.md).
-This checkout prepares an unreleased 1.1.0 candidate. The published 1.0.0 package
-has no enrichment. The proposal/estimates below are historical; its implementation
+Version 1.1.0 contains the optional AI guidance; the published 1.0.0 package
+has no enrichment. See the [README](../README.md#experimental-ai-guidance-110)
+for release-wheel installation; PyPI publication is a separate action. The proposal/estimates below are historical; its implementation
 uses prompt 1.3, offline preview, explicit send, minimized saved-report evidence,
 separate sidecars and process-environment credentials. No key is bundled or saved.
 Explicit send authenticates with the provider via certificate-verified HTTPS.
@@ -23,12 +24,14 @@ trials used three requests, zero retries: 06/20 succeeded and 10 exhausted the
 one-time [Astra review](ai-review-2026-10-04.md) remains attached only to its earlier
 corpus; no score transfer or new rating occurred.
 
-The published implementation at commit1572222fd7ab4c851f8a8aeebcf873dae2d493cb
-passed all12 platform/Python cells and quality, including Windows symlink checks.
-Matching package/benchmark proof passed. Changed release-candidate files require
-appropriate fresh offline checks; prior hosted success is not relabeled as
-validation of these changes. No commit/push/merge/tag/release publication is
-included in offline preparation.
+The reviewed implementation was merged to main at
+`602bfe1b8124fc1f2e1613943372ccb3e5be912d`.
+[Main CI](https://github.com/HHP8/RepoInsight/actions/runs/37540211948) passed
+all 12 platform/Python cells and quality: each cell has 506 passed and one
+optional benchmark skip. All three Windows filesystem checks map to pass
+markers using the verified exact-commit node order. Matching package/benchmark
+proof passed. Release documentation changes need their own checks; these main
+results are not relabeled as validation of later commits.
 
 Static scoring and report structure remain v1. New reports truthfully identify
 tool1.1.0; the updated metadata constraint accepts both1.0.0 and1.1.0, preserving
@@ -39,7 +42,8 @@ extensions are still future work.
 
 See the [evaluation guide](ai-evaluation.md), [AI workflow](examples/ai-guidance.md)
 and [security model](security.md). Local progress is kept outside distributions
-in UPGRADE_PROGRESS.md. Final source publication and release decisions are open.
+in UPGRADE_PROGRESS.md. Tag, GitHub Release and PyPI publication require separate
+explicit authorization; this roadmap grants none.
 
 ## 1. Basis in the original project
 

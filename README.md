@@ -63,7 +63,7 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 - [Known limitations](docs/limitations.md)
 - [Release process](docs/release.md)
 - [Proposed upgrade plan: AI guidance and future improvements](docs/upgrade-plan.md)
-- [AI enrichment examples (development checkout)](docs/examples/ai-guidance.md)
+- [AI enrichment examples](docs/examples/ai-guidance.md)
 - [AI release evaluation](docs/ai-evaluation.md)
 - [Codex Cloud development](docs/codex-cloud.md)
 - [Support](SUPPORT.md)
@@ -94,10 +94,19 @@ python3 -m venv .venv
 
 The standard test suite needs no network access. The 100,000-line benchmark and live public-repository smoke are opt-in. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Experimental AI guidance (1.1 release candidate)
+## Experimental AI guidance (1.1.0)
 
 The optional experimental implementation can explain a saved report and suggest
-up to two evidence-linked actions. Install the optional transport from this checkout:
+up to two evidence-linked actions. The published 1.0.0 package has no `enrich`.
+For 1.1.0, download the wheel from the
+[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.1.0) and install
+it locally; GitHub release publication and PyPI publication are separate:
+
+```console
+python -m pip install './repoinsight-1.1.0-py3-none-any.whl[ai]'
+```
+
+From a source checkout, install the optional transport with:
 
 ```console
 python -m pip install -e '.[ai]'
@@ -107,16 +116,17 @@ repoinsight enrich reports/repoinsight-report.json --send --model MODEL_ID --out
 ```
 
 Replace `MODEL_ID` with a model available to your account that supports the OpenAI
-Responses API and Structured Outputs. Set `OPENAI_API_KEY` through your shell or CI
-secret manager before send mode. Preview requires no key or network access and
+Responses API and Structured Outputs. Supply `OPENAI_API_KEY` only through the local process
+environment before send mode. Do not put key values in source, application
+settings or reports. Release and CI validation need no personal API key. Preview requires no key or network access and
 prints the exact JSON request; only `--send` transmits selected static evidence.
 Source code, repository identity, Git identities, paths, and repository prose are
 omitted from that request. Paths appear locally in the separate AI JSON/HTML reports.
 Existing saved reports and static scores stay unchanged. New static reports identify
 the producing tool as 1.1.0; schema and score-contract identifiers remain 1.0.
 AI guidance may fail after a paid request when reasoning exhausts the output cap.
-The default 1500-token cap does not guarantee complete JSON. This candidate is
-unreleased; the published 1.0.0 package does not include AI guidance; see the [workflow](docs/examples/ai-guidance.md) and
+The default 1500-token cap does not guarantee complete JSON. See the
+[workflow](docs/examples/ai-guidance.md) and
 [privacy details](docs/security.md#experimental-ai-enrichment).
 
 ## License

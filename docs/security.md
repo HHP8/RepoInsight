@@ -30,7 +30,8 @@ The experimental `enrich` command creates an explicit exception to version 1's
 offline analysis boundary. `analyze` remains static and does not call AI. Only
 `enrich --send` transmits data; a saved key or repository TOML cannot enable it.
 `enrich --preview --model MODEL_ID` prints the complete request without a key or
-network access. This code is not yet part of the published 1.0.0 release.
+network access. Optional AI guidance is included in 1.1.0; the published 1.0.0
+package has no enrichment.
 
 The outbound projection contains trusted built-in rule descriptions, rule IDs,
 severity/confidence, numeric scores, selected numeric/boolean aggregate metrics,

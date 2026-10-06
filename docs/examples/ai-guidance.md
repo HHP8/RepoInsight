@@ -1,7 +1,9 @@
 # AI guidance walkthrough
 
-This workflow uses the development checkout; the published 1.0.0 package does
-not contain `enrich`. Start by installing the optional transport and producing
+This walkthrough uses a 1.1.0 source checkout and its example fixture; the
+published 1.0.0 package does not contain `enrich`. For installing the 1.1.0
+release wheel, see the [README](../../README.md#experimental-ai-guidance-110).
+Start by installing the optional transport and producing
 a static report. Replace `MODEL_ID` below with an accessible Responses API model
 that supports Structured Outputs. No model is selected automatically.
 

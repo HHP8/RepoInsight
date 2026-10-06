@@ -2,7 +2,7 @@
 
 All notable changes to RepoInsight are documented here.
 
-## 1.1.0 - Unreleased
+## 1.1.0 - 2026-10-07
 
 - Added experimental opt-in AI guidance over minimized saved-report evidence,
   offline preview, explicit send consent and separate JSON/HTML sidecars.
