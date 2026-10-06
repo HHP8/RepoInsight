@@ -1,6 +1,6 @@
 # RepoInsight
 
-RepoInsight 1.0 is a cross-platform Python CLI that produces deterministic repository-health reports without importing or executing repository code. It analyzes local directories and public GitHub repositories with bounded file discovery, Python AST inspection, sanitized Git metadata, transparent scoring, a versioned JSON contract, and a standalone offline HTML report.
+RepoInsight is a cross-platform Python CLI that produces deterministic repository-health reports without importing or executing repository code. It analyzes local directories and public GitHub repositories with bounded file discovery, Python AST inspection, sanitized Git metadata, transparent scoring, a versioned JSON contract, and a standalone offline HTML report.
 
 ![Illustrative RepoInsight standalone report preview](docs/assets/report-preview.svg)
 
@@ -94,10 +94,10 @@ python3 -m venv .venv
 
 The standard test suite needs no network access. The 100,000-line benchmark and live public-repository smoke are opt-in. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Optional AI guidance (development checkout)
+## Experimental AI guidance (1.1 release candidate)
 
-The next-release implementation can explain a saved report and suggest up to five
-evidence-linked actions. Install the optional transport from this checkout:
+The optional experimental implementation can explain a saved report and suggest
+up to two evidence-linked actions. Install the optional transport from this checkout:
 
 ```console
 python -m pip install -e '.[ai]'
@@ -112,9 +112,12 @@ secret manager before send mode. Preview requires no key or network access and
 prints the exact JSON request; only `--send` transmits selected static evidence.
 Source code, repository identity, Git identities, paths, and repository prose are
 omitted from that request. Paths appear locally in the separate AI JSON/HTML reports.
-Static scores and reports stay unchanged. This feature is not in the published
-1.0.0 package yet; see the [workflow](docs/examples/ai-guidance.md) and
-[privacy details](docs/security.md#optional-ai-enrichment-development-checkout).
+Existing saved reports and static scores stay unchanged. New static reports identify
+the producing tool as 1.1.0; schema and score-contract identifiers remain 1.0.
+AI guidance may fail after a paid request when reasoning exhausts the output cap.
+The default 1500-token cap does not guarantee complete JSON. This candidate is
+unreleased; the published 1.0.0 package does not include AI guidance; see the [workflow](docs/examples/ai-guidance.md) and
+[privacy details](docs/security.md#experimental-ai-enrichment).
 
 ## License
 

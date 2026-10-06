@@ -1,39 +1,45 @@
 # RepoInsight upgrade plan
 
-**Status:** AI MVP implemented in the development checkout; release evaluation pending. Sections below preserve the original proposal and estimates; see implementation status immediately below.  
+**Status:** Experimental AI MVP accepted; offline 1.1.0 release preparation in progress. Sections below preserve the original proposal and estimates; see implementation status immediately below.
 **Date:** 2026-10-02  
 **Baseline:** RepoInsight 1.0.0  
 **Recommended next release:** 1.1, optional AI guidance over existing static evidence.
 
 ## Implementation status
 
-Implemented: offline request preview, explicit send mode, minimized evidence with
-opaque identifiers, environment credentials, bounded fixed-endpoint OpenAI
-Responses transport, structured guidance validation, independent AI schema,
-separate escaped JSON/HTML reports, failure records, tests, and worked examples.
-Static v1 reports and scoring remain unchanged. Both modes require `--model MODEL_ID`
-so preview shows the same request body as send. Package version remains 1.0.0
-during development; the published 1.0.0 release does not include enrichment.
+The optional AI MVP is implemented and the owner accepted its experimental
+limitations on 2026-10-07; see [release acceptance](ai-release-acceptance-2026-10-07.md).
+This checkout prepares an unreleased 1.1.0 candidate. The published 1.0.0 package
+has no enrichment. The proposal/estimates below are historical; its implementation
+uses prompt 1.3, offline preview, explicit send, minimized saved-report evidence,
+separate sidecars and process-environment credentials. No key is bundled or saved.
+Explicit send authenticates with the provider via certificate-verified HTTPS.
 
-The 2026-10-03 source handoff includes prompt 1.2 and saved GPT-6 luna evaluation
-evidence. Offline replay verifies 19 successful selected responses out of 20 cases;
-case 03 remains truncated, and the selection mixes prompt versions 1.1 and 1.2.
-On 2026-10-04, the owner explicitly requested a single Astra rating in place of
-human review. The [AI review](ai-review-2026-10-04.md) rated 19/20 cases useful;
-the owner approved continuation on 2026-10-04. This is an AI evaluation,
-not human sign-off or confirmation that all release gates have passed.
+The original corpus has 20 gpt-6-luna requests, zero retries, 19 complete saved
+responses accepted by final guards and case 10 incomplete. Original live failures
+and offline recoveries are preserved separately. The three separate variation
+trials used three requests, zero retries: 06/20 succeeded and 10 exhausted the
+1500-output-token cap again. No further paid tests are authorized. The accepted
+one-time [Astra review](ai-review-2026-10-04.md) remains attached only to its earlier
+corpus; no score transfer or new rating occurred.
 
-Pending release gates include final-prompt consistency/variation evaluation,
-cross-platform CI, and release/version synchronization. Prompt 1.3 now requests
-and validates compact guidance, with offline checks passing; live
-reliability has not yet been established. Report comparison, bounded
-source context, rule-precision changes, and other later extensions remain planned.
-See [AI workflow examples](examples/ai-guidance.md). Local resume details are in
-`UPGRADE_PROGRESS.md` at the repository root.
-The [evaluation guide](ai-evaluation.md) defines 20 curated review cases and the
-maintainer rubric. A portable offline review packet and blank human rating sheet
-are recorded in the checkpoint. Saved paid calls must not be repeated; future
-live testing is restricted to `gpt-6-luna` without fallback.
+The published implementation at commit1572222fd7ab4c851f8a8aeebcf873dae2d493cb
+passed all12 platform/Python cells and quality, including Windows symlink checks.
+Matching package/benchmark proof passed. Changed release-candidate files require
+appropriate fresh offline checks; prior hosted success is not relabeled as
+validation of these changes. No commit/push/merge/tag/release publication is
+included in offline preparation.
+
+Static scoring and report structure remain v1. New reports truthfully identify
+tool1.1.0; the updated metadata constraint accepts both1.0.0 and1.1.0, preserving
+old saved reports. Schema/score identifiers remain1.0 and analyzers remain1.0.0.
+Older validators pinning tool1.0.0 need the updated packaged schema. Original
+paid reports/previews remain immutable. Later comparison/source-context/rule
+extensions are still future work.
+
+See the [evaluation guide](ai-evaluation.md), [AI workflow](examples/ai-guidance.md)
+and [security model](security.md). Local progress is kept outside distributions
+in UPGRADE_PROGRESS.md. Final source publication and release decisions are open.
 
 ## 1. Basis in the original project
 

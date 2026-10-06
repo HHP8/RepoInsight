@@ -30,6 +30,7 @@ from .normalization import normalize_results
 from .python_index import build_python_index
 from .reporting.writers import write_reports
 from .scoring import score_evidence
+from .version import __version__
 
 _T = TypeVar("_T")
 
@@ -139,7 +140,7 @@ class AnalyzeService:
                 score_contract_version="1.0",
                 tool=ToolMetadata(
                     name="RepoInsight",
-                    version="1.0.0",
+                    version=__version__,
                     schema_version="1.0",
                     score_contract_version="1.0",
                 ),

@@ -69,7 +69,9 @@ includes any model reasoning tokens. A truncated response is rejected; supplied
 usage is retained in the failed sidecar, and truncation is not retried automatically.
 In the saved case-03 response, 927 of 1500 output tokens were reasoning tokens;
 the remaining 573 did not complete the JSON answer. The smaller prompt/schema
-is a mitigation; live reliability with prompt 1.3 still needs validation.
+is a mitigation. Under final prompt 1.3, case 10 exhausted the same cap in both
+its original and variation attempts (1325 and 1189 reasoning tokens respectively).
+Completion at this budget is not guaranteed; partial JSON is not reconstructed.
 
 Offline tests use synthetic provider responses and no credentials:
 

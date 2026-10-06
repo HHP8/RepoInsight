@@ -24,9 +24,9 @@ These cases require operating-system-level trust and isolation outside the produ
 
 Follow [SECURITY.md](../SECURITY.md). Do not include real credentials, private repository contents, or exploit data in a public issue.
 
-## Optional AI enrichment (development checkout)
+## Experimental AI enrichment
 
-The next-release `enrich` command creates an explicit exception to version 1's
+The experimental `enrich` command creates an explicit exception to version 1's
 offline analysis boundary. `analyze` remains static and does not call AI. Only
 `enrich --send` transmits data; a saved key or repository TOML cannot enable it.
 `enrich --preview --model MODEL_ID` prints the complete request without a key or
@@ -40,7 +40,15 @@ Opaque evidence IDs map to file locations only in local AI reports. Selected
 metrics and findings can still reveal characteristics of a private project.
 
 The credential comes exclusively from `OPENAI_API_KEY` and is used only in the
-authorization header. RepoInsight rejects keys in request content, redacts the
+authorization header when the user explicitly selects send mode. The key exists
+in process memory during authentication and is sent to the API provider over
+certificate-verified HTTPS. It is not bundled in the application, written to app
+settings or a credential file, cached, or included in reports or request content.
+RepoInsight does not load .env files. Static analysis and preview need no key and
+make no AI request. This does not promise protection from a compromised OS or
+third-party debugging/HTTP logging enabled outside RepoInsight.
+
+RepoInsight rejects keys in request content, redacts the
 exact active key from diagnostics and responses, and applies existing heuristic
 redaction. Neither technique guarantees removal of every confidential value.
 Do not commit keys or preview payloads containing confidential evidence.

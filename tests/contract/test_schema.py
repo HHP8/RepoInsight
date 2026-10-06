@@ -91,10 +91,16 @@ def test_checked_in_schema_is_identical_to_generated_model_schema() -> None:
     assert checked_in["$schema"] == "https://json-schema.org/draft/2020-12/schema"
 
 
-def test_minimal_complete_report_validates_independently_with_jsonschema() -> None:
+@pytest.mark.parametrize("tool_version", ["1.0.0", "1.1.0"])
+def test_minimal_complete_report_validates_independently_with_jsonschema(
+    tool_version: str,
+) -> None:
     report = _minimal_complete_report()
     payload = json.loads(report.model_dump_json())
 
+    payload["tool"]["version"] = tool_version
+    restored = models.AnalysisReport.model_validate_json(json.dumps(payload), strict=False)
+    assert restored.tool.version == tool_version
     jsonschema.Draft202012Validator.check_schema(schema.report_json_schema())
     jsonschema.validate(payload, schema.report_json_schema())
 

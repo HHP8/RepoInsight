@@ -7,7 +7,7 @@ def test_public_versions_are_stable() -> None:
     package = importlib.import_module("repoinsight")
     version = importlib.import_module("repoinsight.version")
 
-    assert package.__version__ == "1.0.0"
+    assert package.__version__ == "1.1.0"
     assert version.SCHEMA_VERSION == "1.0"
     assert version.SCORE_CONTRACT_VERSION == "1.0"
 

@@ -3,8 +3,9 @@
 Automated tests in `tests/ai/` verify request privacy, consent, transport limits,
 schema validation, citation handling, failure records, HTML escaping, and static
 report preservation without network calls. These tests do not measure live-model
-usefulness. Keep the package version unchanged until the release gates in the
-[upgrade plan](upgrade-plan.md) are satisfied.
+usefulness. Candidate preparation follows the owner
+[acceptance](ai-release-acceptance-2026-10-07.md); publication still requires the
+remaining [release checks](release.md) and a separate decision.
 
 ## Curated review cases
 
@@ -111,3 +112,14 @@ Prompt 1.3 uses a compact two-action/two-explanation request schema and enforces
 replay of older saved prompts must not relabel their provenance or retroactively
 apply the new compactness contract. Offline replay verifies compatibility, not
 whether an unsent prompt will improve model behavior.
+
+
+## Current acceptance — 2026-10-07
+
+The owner accepted the recorded experimental MVP limitations after the final
+three-case variation check. Cases06/20 completed and10 exhausted the unchanged
+1500-output-token cap again. Variation is assessed, not an all-pass completion
+guarantee. This acceptance does not transfer the earlier Astra score or create
+new ratings. Read [release acceptance](ai-release-acceptance-2026-10-07.md) for
+exact scope. Offline candidate preparation is authorized; further paid testing
+and publication are not.

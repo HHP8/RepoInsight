@@ -1,6 +1,17 @@
 # Release process
 
-RepoInsight uses semantic version tags shaped `v1.0.0`. The package, runtime constant, schema version, score contract, changelog, docs, and tag must agree.
+RepoInsight uses semantic version tags shaped `v1.0.0`. The package, runtime constant, new-report tool version, changelog, docs and tag
+must agree. Schema, score-contract and analyzer identifiers are versioned
+independently: the 1.1 candidate retains their 1.0 contracts/analyzer 1.0.0 metadata.
+Its updated static v1 schema accepts tool metadata 1.0.0 and 1.1.0; saved 1.0 reports
+remain readable, while consumers pinning the old tool-version const need the
+updated schema. Do not globally replace historical version literals.
+
+Before staging or exporting any release candidate, check the explicit file
+allowlist and built wheel/sdist members for accidentally included credentials,
+.env files, API headers, checkpoints, evaluation responses or local evidence.
+Use synthetic credentials for offline tests. Never set a real OPENAI_API_KEY in
+CI release validation; no live AI smoke or credential upload is required.
 
 ## Maintainer checklist
 

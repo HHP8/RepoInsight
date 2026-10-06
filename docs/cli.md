@@ -42,7 +42,7 @@ repoinsight explain RI-SEC-001
 
 Print the package and public JSON Schema versions.
 
-## `repoinsight enrich REPORT` (development checkout)
+## `repoinsight enrich REPORT` (experimental)
 
 Explain an existing v1 JSON report without reading or executing current repository
 source. This command is implemented for the next release and is not available in

@@ -19,7 +19,7 @@ from repoinsight.models import AnalysisRequest
 
 def test_version_rules_and_explain_commands(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["version"]) == ExitCode.SUCCESS
-    assert "RepoInsight 1.0.0" in capsys.readouterr().out
+    assert "RepoInsight 1.1.0" in capsys.readouterr().out
 
     assert main(["rules"]) == ExitCode.SUCCESS
     rules_output = capsys.readouterr().out
@@ -49,6 +49,9 @@ def test_analyze_writes_selected_format_and_prints_redacted_summary(
 
     assert result == ExitCode.SUCCESS
     assert (output / "repoinsight-report.json").is_file()
+    report = json.loads((output / "repoinsight-report.json").read_bytes())
+    assert report["tool"]["version"] == "1.1.0"
+    assert report["schema_version"] == report["score_contract_version"] == "1.0"
     assert not (output / "repoinsight-report.html").exists()
     assert "Overall score:" in captured.out
     assert "repoinsight-report.json" in captured.out

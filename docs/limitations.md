@@ -12,8 +12,16 @@
 
 Nonessential edge cases that require operating-system-level defenses are documented rather than silently expanding the version 1 threat model.
 
-## AI enrichment limitations (development checkout)
+## Experimental AI enrichment limitations
 
+- AI guidance is experimental. The owner accepted the recorded MVP limitations;
+  this is not a guarantee of usefulness or completion on every input.
+- The default 1500-output-token cap includes reasoning. Saved case 10 exhausted
+  this cap in both the original and variation attempts. Incomplete JSON is rejected
+  with usage retained; truncation is not retried automatically and may incur charges.
+- Individual requested field lengths are prompt instructions; runtime validation
+  enforces the overall 180-word cap and compact sections. Historical field misses,
+  grouped-evidence citations and verification-detail caveats remain recorded.
 - Guidance describes a saved report, which may represent an older revision. It never checks current source or runs tests.
 - AI output is variable, advisory, and may be wrong. It cannot change deterministic scores or confirm security, coverage, runtime behavior, or a fix.
 - The evidence projection intentionally omits source snippets, arbitrary finding prose, identity, and paths. Detailed project-specific code edits are outside this release.
