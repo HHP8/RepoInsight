@@ -44,3 +44,14 @@ send mode. The ordinary installation, analyzer registry, static score contract,
 and static JSON schema remain unchanged. Missing credentials/dependencies are
 usage failures; provider/guidance failures have exit code 24 and record sanitized
 failure status when possible.
+
+## Local saved-report comparison
+
+Implemented locally after 1.1.0, uncommitted and unreleased. `saved_reports.py`
+owns shared bounded validation and exact-byte hashes; enrichment's loader import
+remains compatible. `comparison.py` compares immutable saved models without
+acquisition, analyzer execution or AI transport, using exact multiset keys.
+`comparison_models.py` and its packaged schema own independent contract 1.0.
+The comparison renderer rejects input aliases and reuses atomic writing.
+Static/AI contracts, rules, scoring and package version remain unchanged.
+See [comparison](comparison.md) for matching and unknown version evidence.

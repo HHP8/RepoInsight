@@ -12,6 +12,20 @@
 
 Nonessential edge cases that require operating-system-level defenses are documented rather than silently expanding the version 1 threat model.
 
+## Local comparison limitations
+
+The local uncommitted [comparison MVP](comparison.md) matches exact locations.
+Renames, shifted lines and changed ranges can appear as removal/addition.
+Repeated/locationless matching is deterministic but ambiguous; suppression is
+not a fix. Missing findings under limited coverage or incompatible metadata are
+no longer observed, not proven resolved. Complete static evidence still cannot
+verify security fixes or runtime improvements. Score deltas need context.
+
+Configuration details absent from saved reports and analyzer versions absent
+from findings remain unknown. Prose hashes compare redacted values, which can
+collapse distinct secrets. Alias preflight and atomic writing do not expand the
+v1 threat model to concurrent privileged filesystem mutation.
+
 ## Experimental AI enrichment limitations
 
 - AI guidance is experimental. The owner accepted the recorded MVP limitations;

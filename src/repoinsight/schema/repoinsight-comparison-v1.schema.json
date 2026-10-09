@@ -1,0 +1,626 @@
+{
+  "$defs": {
+    "AnalyzerVersions": {
+      "additionalProperties": false,
+      "properties": {
+        "analyzer_id": {
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "before": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Before",
+          "type": "array"
+        },
+        "after": {
+          "items": {
+            "type": "string"
+          },
+          "title": "After",
+          "type": "array"
+        }
+      },
+      "required": [
+        "analyzer_id",
+        "before",
+        "after"
+      ],
+      "title": "AnalyzerVersions",
+      "type": "object"
+    },
+    "Category": {
+      "enum": [
+        "maintainability",
+        "testing",
+        "documentation",
+        "security_hygiene",
+        "repository_hygiene",
+        "maintenance"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "Compatibility": {
+      "additionalProperties": false,
+      "properties": {
+        "differences": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Differences",
+          "type": "array"
+        },
+        "analyzer_versions": {
+          "items": {
+            "$ref": "#/$defs/AnalyzerVersions"
+          },
+          "title": "Analyzer Versions",
+          "type": "array"
+        },
+        "scores_interpretable": {
+          "title": "Scores Interpretable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "differences",
+        "analyzer_versions",
+        "scores_interpretable"
+      ],
+      "title": "Compatibility",
+      "type": "object"
+    },
+    "Completeness": {
+      "enum": [
+        "available",
+        "partial",
+        "unavailable",
+        "skipped"
+      ],
+      "title": "Completeness",
+      "type": "string"
+    },
+    "Confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "CountChange": {
+      "additionalProperties": false,
+      "properties": {
+        "before": {
+          "minimum": 0,
+          "title": "Before",
+          "type": "integer"
+        },
+        "after": {
+          "minimum": 0,
+          "title": "After",
+          "type": "integer"
+        },
+        "delta": {
+          "title": "Delta",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "title": "CountChange",
+      "type": "object"
+    },
+    "DiagnosticChanges": {
+      "additionalProperties": false,
+      "properties": {
+        "added": {
+          "minimum": 0,
+          "title": "Added",
+          "type": "integer"
+        },
+        "removed": {
+          "minimum": 0,
+          "title": "Removed",
+          "type": "integer"
+        },
+        "unchanged": {
+          "minimum": 0,
+          "title": "Unchanged",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "added",
+        "removed",
+        "unchanged"
+      ],
+      "title": "DiagnosticChanges",
+      "type": "object"
+    },
+    "FindingAttributes": {
+      "additionalProperties": false,
+      "properties": {
+        "analyzer_version": {
+          "title": "Analyzer Version",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/Category"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "score_impact": {
+          "title": "Score Impact",
+          "type": "number"
+        },
+        "suppressed": {
+          "title": "Suppressed",
+          "type": "boolean"
+        },
+        "cap_applied": {
+          "title": "Cap Applied",
+          "type": "boolean"
+        },
+        "content_hashes": {
+          "additionalProperties": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "title": "Content Hashes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "analyzer_version",
+        "category",
+        "severity",
+        "confidence",
+        "score_impact",
+        "suppressed",
+        "cap_applied",
+        "content_hashes"
+      ],
+      "title": "FindingAttributes",
+      "type": "object"
+    },
+    "FindingChange": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "new",
+            "resolved",
+            "no_longer_observed",
+            "unchanged",
+            "changed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "count": {
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "before": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FindingAttributes"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FindingAttributes"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "changed_attributes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed Attributes",
+          "type": "array"
+        },
+        "ambiguous": {
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "uncertain": {
+          "title": "Uncertain",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rule_id",
+        "analyzer_id",
+        "location",
+        "status",
+        "count",
+        "before",
+        "after",
+        "changed_attributes",
+        "ambiguous",
+        "uncertain"
+      ],
+      "title": "FindingChange",
+      "type": "object"
+    },
+    "FindingCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "new": {
+          "minimum": 0,
+          "title": "New",
+          "type": "integer"
+        },
+        "resolved": {
+          "minimum": 0,
+          "title": "Resolved",
+          "type": "integer"
+        },
+        "no_longer_observed": {
+          "minimum": 0,
+          "title": "No Longer Observed",
+          "type": "integer"
+        },
+        "unchanged": {
+          "minimum": 0,
+          "title": "Unchanged",
+          "type": "integer"
+        },
+        "changed": {
+          "minimum": 0,
+          "title": "Changed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "new",
+        "resolved",
+        "no_longer_observed",
+        "unchanged",
+        "changed"
+      ],
+      "title": "FindingCounts",
+      "type": "object"
+    },
+    "InputSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "tool_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Tool Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_contract_version": {
+          "const": "1.0",
+          "title": "Score Contract Version",
+          "type": "string"
+        },
+        "configuration_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Configuration Fingerprint",
+          "type": "string"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "findings": {
+          "minimum": 0,
+          "title": "Findings",
+          "type": "integer"
+        },
+        "suppressed_findings": {
+          "minimum": 0,
+          "title": "Suppressed Findings",
+          "type": "integer"
+        },
+        "skipped_inputs": {
+          "minimum": 0,
+          "title": "Skipped Inputs",
+          "type": "integer"
+        },
+        "warnings": {
+          "minimum": 0,
+          "title": "Warnings",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "tool_version",
+        "schema_version",
+        "score_contract_version",
+        "configuration_fingerprint",
+        "completeness",
+        "findings",
+        "suppressed_findings",
+        "skipped_inputs",
+        "warnings"
+      ],
+      "title": "InputSummary",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string",
+          "pattern": "^(?!/)(?![A-Za-z]:/)(?!.*\\\\)(?!\\.{1,2}(?:/|$))(?!.*(?:/\\.{1,2})(?:/|$))[^/]+(?:/[^/]+)*$"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Line"
+        },
+        "start_column": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Column"
+        },
+        "end_column": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Column"
+        }
+      },
+      "required": [
+        "path",
+        "start_line"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "ScoreChange": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Category"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "before": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Before"
+        },
+        "after": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "After"
+        },
+        "delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Delta"
+        },
+        "before_completeness": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Completeness"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after_completeness": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Completeness"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "category",
+        "before",
+        "after",
+        "delta",
+        "before_completeness",
+        "after_completeness"
+      ],
+      "title": "ScoreChange",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "comparison_schema_version": {
+      "const": "1.0",
+      "title": "Comparison Schema Version",
+      "type": "string"
+    },
+    "before": {
+      "$ref": "#/$defs/InputSummary"
+    },
+    "after": {
+      "$ref": "#/$defs/InputSummary"
+    },
+    "compatibility": {
+      "$ref": "#/$defs/Compatibility"
+    },
+    "overall": {
+      "$ref": "#/$defs/ScoreChange"
+    },
+    "categories": {
+      "items": {
+        "$ref": "#/$defs/ScoreChange"
+      },
+      "title": "Categories",
+      "type": "array"
+    },
+    "skipped_inputs": {
+      "$ref": "#/$defs/CountChange"
+    },
+    "warning_count": {
+      "$ref": "#/$defs/CountChange"
+    },
+    "skipped_input_changes": {
+      "$ref": "#/$defs/DiagnosticChanges"
+    },
+    "warning_changes": {
+      "$ref": "#/$defs/DiagnosticChanges"
+    },
+    "counts": {
+      "$ref": "#/$defs/FindingCounts"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/FindingChange"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "comparison_schema_version",
+    "before",
+    "after",
+    "compatibility",
+    "overall",
+    "categories",
+    "skipped_inputs",
+    "warning_count",
+    "skipped_input_changes",
+    "warning_changes",
+    "counts",
+    "findings",
+    "warnings",
+    "limitations"
+  ],
+  "title": "ComparisonReport",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

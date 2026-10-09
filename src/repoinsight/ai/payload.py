@@ -3,22 +3,18 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
-from pydantic import ValidationError
-
 from ..analyzers.catalog import RULE_CATALOG
 from ..errors import InvalidUsageError
 from ..models import AnalysisReport, Severity
-from ..schema import report_json_schema
-from .contracts import PROMPT_VERSION, canonical_json, request_body
+from ..saved_reports import MAX_REPORT_BYTES
+from ..saved_reports import load_report as _load_report
+from .contracts import PROMPT_VERSION, request_body
 from .models import EvidenceReference, PromptVersion
 
-MAX_REPORT_BYTES = 16 * 1024 * 1024
 _MODEL = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$")
 _METRICS = frozenset(
     {
@@ -56,27 +52,8 @@ class PreparedRequest:
 
 
 def load_report(path: Path) -> tuple[AnalysisReport, str]:
-    try:
-        with path.open("rb") as stream:
-            raw = stream.read(MAX_REPORT_BYTES + 1)
-        if len(raw) > MAX_REPORT_BYTES:
-            raise InvalidUsageError("Saved report exceeds the 16 MiB input limit")
-        payload = json.loads(raw)
-        if not Draft202012Validator(report_json_schema()).is_valid(payload):
-            raise InvalidUsageError("Input must satisfy the RepoInsight v1 report schema")
-        # Redaction's before-validator converts JSON to Python values. The independent
-        # schema enforces JSON types; allow arrays/enums/datetimes to decode here.
-        report = AnalysisReport.model_validate_json(raw, strict=False)
-        if len({metric.id for metric in report.metrics}) != len(report.metrics):
-            raise InvalidUsageError("Saved report contains duplicate metric identifiers")
-        categories = report.scorecard.categories
-        if len({category.category for category in categories}) != len(categories):
-            raise InvalidUsageError("Saved report contains duplicate scoring categories")
-        # Reject non-finite metric values, which JSON itself cannot represent.
-        canonical_json(report.model_dump(mode="json"))
-    except (OSError, ValueError, RecursionError, ValidationError):
-        raise InvalidUsageError("Unable to read a valid saved RepoInsight v1 report") from None
-    return report, hashlib.sha256(raw).hexdigest()
+    """Compatibility wrapper retaining the enrichment import and limit boundary."""
+    return _load_report(path, max_bytes=MAX_REPORT_BYTES)
 
 
 def _estimate(request: str) -> int:

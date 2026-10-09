@@ -86,6 +86,25 @@ written when possible for provider or guidance-validation failures; invalid usag
 does not send a request. Output failure takes code 23. AI output is advisory and
 does not affect `analyze --fail-under`.
 
+## `repoinsight compare BEFORE.json AFTER.json` (local development)
+
+The local uncommitted comparison MVP reads saved v1 reports without repository
+scans or AI. It is not in the published 1.1.0 release. `--format terminal|json`
+defaults to terminal. Without `--output`, stdout contains the selected format;
+JSON is exactly one document with no progress messages. `--output PATH` writes
+atomically to a file instead, with empty stdout. Inputs are capped at 16 MiB each.
+Input aliases, including symlinks/hardlinks, cannot be output destinations.
+
+Exact multiset matching shows finding/attribute/suppression changes, scores,
+coverage and compatibility warnings. Success is 0, invalid input/options 20,
+output failure 23; no fail-on-regression policy. See [comparison](comparison.md)
+and [examples](examples/report-comparison.md) for the independent contract/limits.
+
+```console
+repoinsight compare before.json after.json
+repoinsight compare before.json after.json --format json --output comparison.json
+```
+
 ## Exit codes
 
 | Code | Meaning |

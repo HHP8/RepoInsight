@@ -31,7 +31,7 @@ def test_public_versions_commands_rules_and_config_are_synchronized() -> None:
     assert "twine>=7,<8" in metadata["dependency-groups"]["dev"]
 
     cli_docs = (ROOT / "docs" / "cli.md").read_text(encoding="utf-8")
-    for command in ("analyze", "rules", "explain", "version"):
+    for command in ("analyze", "rules", "explain", "version", "compare"):
         assert f"`repoinsight {command}" in cli_docs
 
     rule_docs = (ROOT / "docs" / "rules.md").read_text(encoding="utf-8")
@@ -147,7 +147,7 @@ def test_public_markdown_relative_links_resolve() -> None:
         ROOT / "CONTRIBUTING.md",
         ROOT / "SECURITY.md",
         ROOT / "SUPPORT.md",
-        *(ROOT / "docs").glob("*.md"),
+        *(ROOT / "docs").rglob("*.md"),
         ROOT / "benchmarks" / "README.md",
     )
     missing: list[str] = []

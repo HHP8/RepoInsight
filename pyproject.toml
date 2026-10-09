@@ -52,6 +52,16 @@ dev = [
 packages = ["src/repoinsight"]
 
 [tool.hatch.build.targets.sdist]
+# Do not rely solely on VCS ignores when building from a linked/nested worktree.
+exclude = [
+  "/.artifacts/",
+  "/.venv/",
+  "/.git",
+  "/.env",
+  "/.env.*",
+  "/build/",
+  "/dist/",
+]
 include = [
   "src/repoinsight",
   "tests",

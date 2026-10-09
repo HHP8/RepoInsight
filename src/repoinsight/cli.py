@@ -207,6 +207,41 @@ def enrich_command(
     return int(ExitCode.SUCCESS)
 
 
+@app.command("compare")
+def compare_command(
+    before: Annotated[Path, typer.Argument(help="Saved v1 report before changes.")],
+    after: Annotated[Path, typer.Argument(help="Saved v1 report after changes.")],
+    report_format: Annotated[str, typer.Option("--format", help="terminal or json.")] = "terminal",
+    output: Annotated[
+        Path | None, typer.Option("--output", help="Optional comparison output file.")
+    ] = None,
+) -> int:
+    """Compare local saved reports without scanning repositories or using AI."""
+    from .comparison import compare_reports
+    from .reporting.comparison import (
+        preflight_output,
+        render_comparison,
+        serialize_comparison,
+        write_comparison,
+    )
+
+    if report_format not in {"terminal", "json"}:
+        raise InvalidUsageError("Supported comparison formats are terminal and json")
+    if output is not None:
+        preflight_output(output, (before, after))
+    report = compare_reports(before, after)
+    payload = (
+        serialize_comparison(report)
+        if report_format == "json"
+        else render_comparison(report).encode("utf-8")
+    )
+    if output is not None:
+        write_comparison(output, payload, (before, after))
+    else:
+        typer.echo(payload.decode("utf-8"), nl=False)
+    return int(ExitCode.SUCCESS)
+
+
 def main(args: list[str] | None = None) -> int:
     """Run the Typer command tree while preserving RepoInsight exit codes."""
     command = typer.main.get_command(app)

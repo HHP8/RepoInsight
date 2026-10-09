@@ -40,6 +40,12 @@ Older validators pinning tool1.0.0 need the updated packaged schema. Original
 paid reports/previews remain immutable. Later comparison/source-context/rule
 extensions are still future work.
 
+Local follow-on status: section 9 saved-report comparison is implemented on an
+isolated branch, **uncommitted and unreleased**. See the [comparison contract](comparison.md)
+and [examples](examples/report-comparison.md). Package version remains 1.1.0.
+Bounded source context, static precision and further publication remain future
+work; historical release/AI evidence is not relabeled.
+
 See the [evaluation guide](ai-evaluation.md), [AI workflow](examples/ai-guidance.md)
 and [security model](security.md). Local progress is kept outside distributions
 in UPGRADE_PROGRESS.md. Tag, GitHub Release and PyPI publication require separate
