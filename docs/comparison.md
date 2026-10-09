@@ -1,7 +1,7 @@
 # Local saved-report comparison
 
-Implemented locally and uncommitted after release 1.1.0; not a published 1.2
-release. Comparison reads saved static reports only: no acquisition, analyzer
+Implemented after release 1.1.0 and unreleased; absent from the published 1.1.0
+package. Comparison reads saved static reports only: no acquisition, analyzer
 execution, target-code imports, configuration execution, AI or network calls.
 The base installation needs neither HTTPX nor an API key.
 

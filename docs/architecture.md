@@ -47,7 +47,7 @@ failure status when possible.
 
 ## Local saved-report comparison
 
-Implemented locally after 1.1.0, uncommitted and unreleased. `saved_reports.py`
+Implemented after 1.1.0 and unreleased. `saved_reports.py`
 owns shared bounded validation and exact-byte hashes; enrichment's loader import
 remains compatible. `comparison.py` compares immutable saved models without
 acquisition, analyzer execution or AI transport, using exact multiset keys.

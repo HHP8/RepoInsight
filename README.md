@@ -1,8 +1,9 @@
 # RepoInsight
 
-Local development addition after release 1.1.0: compare saved reports with
+Development addition after release 1.1.0: compare saved reports with
 `repoinsight compare before.json after.json`. This comparison implementation is
-uncommitted and unreleased; package version remains 1.1.0. See the
+unreleased and absent from the published 1.1.0 package; source version remains
+1.1.0. See the
 [comparison guide](docs/comparison.md) and [before/after examples](docs/examples/report-comparison.md).
 
 RepoInsight is a cross-platform Python CLI that produces deterministic repository-health reports without importing or executing repository code. It analyzes local directories and public GitHub repositories with bounded file discovery, Python AST inspection, sanitized Git metadata, transparent scoring, a versioned JSON contract, and a standalone offline HTML report.

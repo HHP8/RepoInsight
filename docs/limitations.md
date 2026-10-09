@@ -14,7 +14,7 @@ Nonessential edge cases that require operating-system-level defenses are documen
 
 ## Local comparison limitations
 
-The local uncommitted [comparison MVP](comparison.md) matches exact locations.
+The unreleased [comparison MVP](comparison.md) matches exact locations.
 Renames, shifted lines and changed ranges can appear as removal/addition.
 Repeated/locationless matching is deterministic but ambiguous; suppression is
 not a fix. Missing findings under limited coverage or incompatible metadata are

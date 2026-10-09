@@ -37,11 +37,11 @@ Static scoring and report structure remain v1. New reports truthfully identify
 tool1.1.0; the updated metadata constraint accepts both1.0.0 and1.1.0, preserving
 old saved reports. Schema/score identifiers remain1.0 and analyzers remain1.0.0.
 Older validators pinning tool1.0.0 need the updated packaged schema. Original
-paid reports/previews remain immutable. Later comparison/source-context/rule
-extensions are still future work.
+paid reports/previews remain immutable. Bounded source context and static-rule
+precision remain future work.
 
-Local follow-on status: section 9 saved-report comparison is implemented on an
-isolated branch, **uncommitted and unreleased**. See the [comparison contract](comparison.md)
+Follow-on status: section 9 saved-report comparison is implemented in development
+source and **unreleased**. See the [comparison contract](comparison.md)
 and [examples](examples/report-comparison.md). Package version remains 1.1.0.
 Bounded source context, static precision and further publication remain future
 work; historical release/AI evidence is not relabeled.

@@ -86,9 +86,9 @@ written when possible for provider or guidance-validation failures; invalid usag
 does not send a request. Output failure takes code 23. AI output is advisory and
 does not affect `analyze --fail-under`.
 
-## `repoinsight compare BEFORE.json AFTER.json` (local development)
+## `repoinsight compare BEFORE.json AFTER.json` (development source)
 
-The local uncommitted comparison MVP reads saved v1 reports without repository
+The unreleased comparison MVP reads saved v1 reports without repository
 scans or AI. It is not in the published 1.1.0 release. `--format terminal|json`
 defaults to terminal. Without `--output`, stdout contains the selected format;
 JSON is exactly one document with no progress messages. `--output PATH` writes

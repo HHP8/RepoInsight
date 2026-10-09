@@ -1,6 +1,6 @@
 # Before/after saved-report examples
 
-Synthetic examples of the local uncommitted implementation; no new runtime,
+Synthetic examples of the unreleased implementation; no new runtime,
 release or live-AI proof. See the [comparison contract](../comparison.md).
 
 ## Complete compatible static evidence
