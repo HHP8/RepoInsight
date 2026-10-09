@@ -41,8 +41,14 @@ paid reports/previews remain immutable. Bounded source context and static-rule
 precision remain future work.
 
 Follow-on status: section 9 saved-report comparison is implemented in development
-source and **unreleased**. See the [comparison contract](comparison.md)
-and [examples](examples/report-comparison.md). Package version remains 1.1.0.
+source and is being prepared as a **local, uncommitted, unreleased 1.2.0 candidate**.
+See the [comparison contract](comparison.md), [examples](examples/report-comparison.md)
+and [candidate notes](release-notes-1.2.0.md). The published 1.1.0 package is unchanged
+and contains no comparison. Candidate package/runtime/new-report metadata is 1.2.0;
+updated schemas accept saved tool versions 1.0.0/1.1.0/1.2.0 only. Static schema,
+score and comparison contracts stay 1.0; analyzer versions stay 1.0.0. Older strict
+validators may need updated schemas for 1.2.0 metadata. No candidate publication
+or platform validation is implied by the earlier main/source CI.
 Bounded source context, static precision and further publication remain future
 work; historical release/AI evidence is not relabeled.
 

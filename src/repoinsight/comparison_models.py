@@ -15,7 +15,7 @@ Count = Annotated[StrictInt, Field(ge=0)]
 
 class InputSummary(StrictModel):
     sha256: Digest
-    tool_version: Literal["1.0.0", "1.1.0"]
+    tool_version: Literal["1.0.0", "1.1.0", "1.2.0"]
     schema_version: Literal["1.0"]
     score_contract_version: Literal["1.0"]
     configuration_fingerprint: Digest

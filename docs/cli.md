@@ -1,5 +1,10 @@
 # CLI reference
 
+This reference includes the local uncommitted 1.2.0 candidate. The published
+1.1.0 package remains unchanged and has no `compare` command. Candidate reports
+use tool 1.2.0; saved 1.0.0/1.1.0/1.2.0 reports are supported, with contracts 1.0.
+Unknown future tool versions fail safely; older strict validators need updated schemas.
+
 ## `repoinsight analyze SOURCE`
 
 Analyze a local directory or public GitHub HTTPS URL.
@@ -86,9 +91,9 @@ written when possible for provider or guidance-validation failures; invalid usag
 does not send a request. Output failure takes code 23. AI output is advisory and
 does not affect `analyze --fail-under`.
 
-## `repoinsight compare BEFORE.json AFTER.json` (development source)
+## `repoinsight compare BEFORE.json AFTER.json` (local 1.2.0 candidate)
 
-The unreleased comparison MVP reads saved v1 reports without repository
+The uncommitted, unreleased comparison MVP reads saved v1 reports without repository
 scans or AI. It is not in the published 1.1.0 release. `--format terminal|json`
 defaults to terminal. Without `--output`, stdout contains the selected format;
 JSON is exactly one document with no progress messages. `--output PATH` writes

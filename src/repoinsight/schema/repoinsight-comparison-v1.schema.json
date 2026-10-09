@@ -332,7 +332,8 @@
         "tool_version": {
           "enum": [
             "1.0.0",
-            "1.1.0"
+            "1.1.0",
+            "1.2.0"
           ],
           "title": "Tool Version",
           "type": "string"

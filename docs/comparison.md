@@ -1,7 +1,7 @@
 # Local saved-report comparison
 
-Implemented after release 1.1.0 and unreleased; absent from the published 1.1.0
-package. Comparison reads saved static reports only: no acquisition, analyzer
+Included in the local uncommitted **1.2.0 candidate**, not a published release;
+absent from the published 1.1.0 package. Comparison reads saved static reports only: no acquisition, analyzer
 execution, target-code imports, configuration execution, AI or network calls.
 The base installation needs neither HTTPX nor an API key.
 
@@ -21,7 +21,13 @@ output failures/aliases. No fail-on-regression policy, HTML or publication actio
 
 Each input is bounded to 16 MiB, independently validated against the packaged
 static schema and immutable models, then hashed from its exact original bytes.
-Supported tool versions: 1.0.0 and 1.1.0; static schema/scoring contracts: 1.0.
+Supported tool versions: 1.0.0, 1.1.0 and 1.2.0; static schema/scoring contracts: 1.0.
+The comparison output contract also remains 1.0; its input-summary metadata enum
+now includes 1.2.0. Older strict static or comparison validators may reject that
+metadata and need the updated packaged schemas. This is bounded compatibility
+with the listed versions, not unlimited forward compatibility. Unknown future
+versions are rejected. Cross-version pairs retain observed numeric deltas but
+disclose a `tool` difference and qualify score interpretation.
 Unsupported contracts, malformed JSON, duplicate metric/category IDs, non-finite
 values, invalid locations and wrong types fail without echoing raw input/prose.
 `saved_reports.load_report` is shared with enrichment; the existing

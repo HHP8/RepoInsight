@@ -2,6 +2,30 @@
 
 All notable changes to RepoInsight are documented here.
 
+## 1.2.0 - Unreleased
+
+Local uncommitted release candidate; not approved, signed, platform-validated or
+published. The published 1.1.0 package remains unchanged.
+
+- Added offline `compare BEFORE.json AFTER.json` with readable terminal output,
+  deterministic JSON, optional atomic file output and exact input byte hashes.
+- Match findings by rule, analyzer and exact normalized location, preserving
+  duplicates as a multiset and disclosing repeated/locationless ambiguity.
+  Renames and line shifts can appear as removals/additions; no fuzzy matching.
+- Show matched attribute and suppression changes; suppression is not a fix.
+  Missing findings under incomplete coverage or incompatible metadata are
+  no longer observed, with uncertainty, rather than proven resolved.
+- Show observed overall/category score deltas, coverage, warning/skip changes
+  and source/configuration/tool/analyzer compatibility qualifications.
+- Share bounded 16 MiB schema/model validation with offline enrichment, retaining
+  its loader import compatibility, redaction and read-only input boundaries.
+- New reports identify tool 1.2.0. Updated static and comparison metadata enums
+  accept 1.0.0, 1.1.0 and 1.2.0; unsupported future versions still fail safely.
+  Older strict validators need the updated schemas for 1.2.0 metadata.
+- Retain static schema/scoring and comparison contracts at 1.0, analyzer versions
+  at 1.0.0, rule IDs and experimental AI prompt/request/response behavior.
+  No source-context mode, rule tuning or new live AI evaluation is included.
+
 ## 1.1.0 - 2026-10-07
 
 - Added experimental opt-in AI guidance over minimized saved-report evidence,

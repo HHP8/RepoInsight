@@ -91,7 +91,7 @@ def test_checked_in_schema_is_identical_to_generated_model_schema() -> None:
     assert checked_in["$schema"] == "https://json-schema.org/draft/2020-12/schema"
 
 
-@pytest.mark.parametrize("tool_version", ["1.0.0", "1.1.0"])
+@pytest.mark.parametrize("tool_version", ["1.0.0", "1.1.0", "1.2.0"])
 def test_minimal_complete_report_validates_independently_with_jsonschema(
     tool_version: str,
 ) -> None:

@@ -1,7 +1,15 @@
 # Before/after saved-report examples
 
-Synthetic examples of the unreleased implementation; no new runtime,
+Synthetic examples of the local uncommitted 1.2.0 candidate; no new runtime,
 release or live-AI proof. See the [comparison contract](../comparison.md).
+The published 1.1.0 package has no comparison command. Tool 1.0.0/1.1.0/1.2.0
+reports are supported; all examples retain contract 1.0.
+
+Comparing otherwise equal tool 1.1.0 and 1.2.0 reports preserves zero observed
+deltas and unchanged finding evidence, while flagging `tool` compatibility and
+`score-deltas-require-context`. Accepting both reports does not make scores from
+different tool metadata unconditionally interpretable. Older strict output
+validators need the updated comparison schema's input-version enum.
 
 ## Complete compatible static evidence
 

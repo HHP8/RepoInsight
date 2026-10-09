@@ -1,9 +1,9 @@
 # RepoInsight
 
-Development addition after release 1.1.0: compare saved reports with
-`repoinsight compare before.json after.json`. This comparison implementation is
-unreleased and absent from the published 1.1.0 package; source version remains
-1.1.0. See the
+Local **1.2.0 release candidate**, uncommitted and unreleased: compare saved reports
+with `repoinsight compare before.json after.json`. The published 1.1.0 package
+does not contain comparison. This candidate is not downloadable as a release,
+approved for publication, signed or validated across the platform matrix. See the
 [comparison guide](docs/comparison.md) and [before/after examples](docs/examples/report-comparison.md).
 
 RepoInsight is a cross-platform Python CLI that produces deterministic repository-health reports without importing or executing repository code. It analyzes local directories and public GitHub repositories with bounded file discovery, Python AST inspection, sanitized Git metadata, transparent scoring, a versioned JSON contract, and a standalone offline HTML report.
@@ -13,6 +13,13 @@ RepoInsight is a cross-platform Python CLI that produces deterministic repositor
 ## Install
 
 RepoInsight requires Python 3.11 or newer.
+
+The commands below install separately published packages, not this local 1.2.0
+candidate. The current published GitHub release is
+[1.1.0](https://github.com/HHP8/RepoInsight/releases/tag/v1.1.0); its optional AI
+guidance is experimental and it has no comparison command. PyPI publication is
+separate. For candidate validation, install a reviewed locally built wheel into
+a disposable environment, following the [release checklist](docs/release.md).
 
 Install the current stable release from [PyPI](https://pypi.org/project/repoinsight/) with
 `pipx` so the command runs in an isolated environment:
@@ -77,6 +84,11 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 ## Development from a source checkout
 
 Use an editable installation with the development dependency group. On Windows:
+
+This source checkout identifies new reports as tool 1.2.0 and accepts saved
+1.0.0, 1.1.0 and 1.2.0 reports. Static schema/scoring and comparison contracts
+remain 1.0. Older strict validators may reject the new tool metadata and need
+updated packaged schemas; unknown future tool versions remain unsupported.
 
 ```console
 python -m venv .venv

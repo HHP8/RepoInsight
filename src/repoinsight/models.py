@@ -99,7 +99,7 @@ class AnalyzerState(StrEnum):
 
 class ToolMetadata(StrictModel):
     name: StrictStr = Field(min_length=1)
-    version: Literal["1.0.0", "1.1.0"]
+    version: Literal["1.0.0", "1.1.0", "1.2.0"]
     schema_version: Literal["1.0"]
     score_contract_version: Literal["1.0"]
 
