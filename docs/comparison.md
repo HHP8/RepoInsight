@@ -1,7 +1,7 @@
 # Local saved-report comparison
 
-Included in the local uncommitted **1.2.0 candidate**, not a published release;
-absent from the published 1.1.0 package. Comparison reads saved static reports only: no acquisition, analyzer
+Included in **RepoInsight 1.2.0**; absent from version 1.1.0.
+Comparison reads saved static reports only: no acquisition, analyzer
 execution, target-code imports, configuration execution, AI or network calls.
 The base installation needs neither HTTPX nor an API key.
 

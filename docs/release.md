@@ -2,21 +2,28 @@
 
 RepoInsight uses semantic version tags shaped `v1.0.0`. The package, runtime constant, new-report tool version, changelog, docs and tag
 must agree. Schema, score-contract and analyzer identifiers are versioned
-independently. The local uncommitted 1.2.0 candidate retains static schema,
+independently. Version 1.2.0 retains static schema,
 score and comparison contracts 1.0 and analyzer metadata 1.0.0. Its regenerated
 static/comparison schemas accept tool metadata 1.0.0, 1.1.0 and 1.2.0 only.
 Saved older reports remain readable; older strict validators may reject new tool
 metadata until updated. Unknown future versions are unsupported. Do not globally
 replace historical version literals or alter the experimental AI contracts.
 
-## Local 1.2.0 preparation status
+## 1.2.0 validation and publication
 
-The published release remains 1.1.0, without comparison. Candidate source/version
-1.2.0 is local, uncommitted and unreleased; not downloadable, publication-approved,
-signed or validated across the new platform matrix. See the
-[draft local notes](release-notes-1.2.0.md). No tag, GitHub draft/release, PyPI,
-commit/push or CI dispatch/rerun is authorized by preparation. Completed main CI
-at af19226 is baseline evidence, not new 1.2.0 candidate proof.
+Version 1.2.0 adds saved-report comparison, absent from 1.1.0. Implementation
+[candidate CI](https://github.com/HHP8/RepoInsight/actions/runs/37995687225) and
+[main CI](https://github.com/HHP8/RepoInsight/actions/runs/37998558157) for `25ae05f`
+passed all 12 supported OS/Python cells (588 passed, one optional benchmark skip
+each) and quality. Windows named link passes use disclosed quiet-log node-order
+inference. Final release-document changes require matching final-commit CI and
+artifact validation; historical CI does not establish those results.
+
+See the [release notes](release-notes-1.2.0.md). Record the final commit, signed
+or protected tag, automatic tag build and verified uploaded asset hashes in the
+release checkpoint. Any commit/push, tag or release action needs explicit scope
+approval. PyPI publication is separate. No provider call or new AI rating is
+required. Preserve earlier release assets and original AI evidence.
 
 Local checks use every available supported development interpreter, explicit
 nonsecret child environments and synthetic fixtures. Run the ordinary suite with
@@ -30,8 +37,8 @@ Check strict Twine metadata and inventories before separate non-editable wheel
 and sdist installs. Base wheel needs no HTTPX; sdist[ai] smoke uses only a mocked
 provider. Produce a controlled 1.2.0 static report, validate installed schemas,
 compare/preview offline and verify input preservation. Keep raw distributions and
-private reports out of sanitized handoffs. Candidate platform CI and publication
-need later bounded approval against the final diff.
+private reports out of sanitized handoffs. Publication requires bounded approval
+against the final diff; reuse completed checks only when their content matches.
 
 Before staging or exporting any release candidate, check the explicit file
 allowlist and built wheel/sdist members for accidentally included credentials,

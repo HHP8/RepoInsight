@@ -14,9 +14,9 @@ Nonessential edge cases that require operating-system-level defenses are documen
 
 ## Local comparison limitations
 
-The local uncommitted 1.2.0 [comparison candidate](comparison.md) matches exact locations.
-It is absent from the published 1.1.0 package and has no new candidate platform-CI
-or live-provider proof. Supported saved tool versions are only 1.0.0/1.1.0/1.2.0;
+The 1.2.0 [comparison command](comparison.md) matches exact locations.
+It is absent from version 1.1.0. Platform tests verify implementation behavior;
+no new live-provider evaluation is included. Supported saved tool versions are only 1.0.0/1.1.0/1.2.0;
 older strict validators can reject 1.2.0 metadata until their schemas are updated.
 Renames, shifted lines and changed ranges can appear as removal/addition.
 Repeated/locationless matching is deterministic but ambiguous; suppression is

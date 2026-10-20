@@ -47,14 +47,14 @@ failure status when possible.
 
 ## Local saved-report comparison
 
-Included in the local uncommitted 1.2.0 candidate, unreleased. `saved_reports.py`
+Included in RepoInsight 1.2.0. `saved_reports.py`
 owns shared bounded validation and exact-byte hashes; enrichment's loader import
 remains compatible. `comparison.py` compares immutable saved models without
 acquisition, analyzer execution or AI transport, using exact multiset keys.
 `comparison_models.py` and its packaged schema own independent contract 1.0.
 The comparison renderer rejects input aliases and reuses atomic writing.
 Static/AI and comparison contracts, rules and scoring remain unchanged. Package
-and runtime versions are 1.2.0 in this local candidate. Static ToolMetadata and
+and runtime versions are 1.2.0. Static ToolMetadata and
 comparison InputSummary accept tool 1.0.0, 1.1.0 and 1.2.0; both checked schemas
 are regenerated from their own model generators. Unknown future versions fail.
 AI payload/sidecar behavior is unchanged; the shared loader supplies the expanded

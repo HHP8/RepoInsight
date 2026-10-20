@@ -1,6 +1,6 @@
 # RepoInsight upgrade plan
 
-**Status:** Experimental AI MVP accepted and merged to main; 1.1.0 release documentation finalized. Sections below preserve the original proposal and estimates; see implementation status immediately below.
+**Status:** Experimental AI guidance introduced in 1.1.0; saved-report comparison added in 1.2.0. Sections below preserve the original proposal and estimates; see implementation status immediately below.
 **Date:** 2026-10-02  
 **Baseline:** RepoInsight 1.0.0  
 **Recommended next release:** 1.1, optional AI guidance over existing static evidence.
@@ -33,24 +33,22 @@ markers using the verified exact-commit node order. Matching package/benchmark
 proof passed. Release documentation changes need their own checks; these main
 results are not relabeled as validation of later commits.
 
-Static scoring and report structure remain v1. New reports truthfully identify
-tool1.1.0; the updated metadata constraint accepts both1.0.0 and1.1.0, preserving
-old saved reports. Schema/score identifiers remain1.0 and analyzers remain1.0.0.
+Static scoring and report structure remain v1. New reports identify tool1.2.0;
+the updated metadata constraint accepts1.0.0/1.1.0/1.2.0, preserving old saved reports. Schema/score identifiers remain1.0 and analyzers remain1.0.0.
 Older validators pinning tool1.0.0 need the updated packaged schema. Original
 paid reports/previews remain immutable. Bounded source context and static-rule
 precision remain future work.
 
-Follow-on status: section 9 saved-report comparison is implemented in development
-source and is being prepared as a **local, uncommitted, unreleased 1.2.0 candidate**.
+Follow-on status: section 9 saved-report comparison is included in **1.2.0**.
 See the [comparison contract](comparison.md), [examples](examples/report-comparison.md)
-and [candidate notes](release-notes-1.2.0.md). The published 1.1.0 package is unchanged
-and contains no comparison. Candidate package/runtime/new-report metadata is 1.2.0;
-updated schemas accept saved tool versions 1.0.0/1.1.0/1.2.0 only. Static schema,
-score and comparison contracts stay 1.0; analyzer versions stay 1.0.0. Older strict
-validators may need updated schemas for 1.2.0 metadata. No candidate publication
-or platform validation is implied by the earlier main/source CI.
-Bounded source context, static precision and further publication remain future
-work; historical release/AI evidence is not relabeled.
+and [release notes](release-notes-1.2.0.md). Version 1.1.0 has no comparison command.
+Package/runtime/new-report metadata is 1.2.0; updated schemas accept saved tool
+versions 1.0.0/1.1.0/1.2.0 only. Static schema, score and comparison contracts stay
+1.0; analyzer versions stay 1.0.0. Older strict validators may need updated schemas.
+Implementation CI passed all 12 cells and quality for exact `25ae05f`; final
+release-document CI and publication checks are recorded separately. This adds no
+live AI evaluation or new usefulness rating. Bounded source context and static
+precision remain future work; historical release/AI evidence is not relabeled.
 
 See the [evaluation guide](ai-evaluation.md), [AI workflow](examples/ai-guidance.md)
 and [security model](security.md). Local progress is kept outside distributions

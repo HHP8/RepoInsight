@@ -2,10 +2,7 @@
 
 All notable changes to RepoInsight are documented here.
 
-## 1.2.0 - Unreleased
-
-Local uncommitted release candidate; not approved, signed, platform-validated or
-published. The published 1.1.0 package remains unchanged.
+## 1.2.0 - 2026-10-20
 
 - Added offline `compare BEFORE.json AFTER.json` with readable terminal output,
   deterministic JSON, optional atomic file output and exact input byte hashes.

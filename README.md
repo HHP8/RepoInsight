@@ -1,9 +1,8 @@
 # RepoInsight
 
-Local **1.2.0 release candidate**, uncommitted and unreleased: compare saved reports
-with `repoinsight compare before.json after.json`. The published 1.1.0 package
-does not contain comparison. This candidate is not downloadable as a release,
-approved for publication, signed or validated across the platform matrix. See the
+**RepoInsight 1.2.0** adds offline saved-report comparison with
+`repoinsight compare before.json after.json`. Version 1.1.0 has no comparison
+command. See the
 [comparison guide](docs/comparison.md) and [before/after examples](docs/examples/report-comparison.md).
 
 RepoInsight is a cross-platform Python CLI that produces deterministic repository-health reports without importing or executing repository code. It analyzes local directories and public GitHub repositories with bounded file discovery, Python AST inspection, sanitized Git metadata, transparent scoring, a versioned JSON contract, and a standalone offline HTML report.
@@ -14,36 +13,24 @@ RepoInsight is a cross-platform Python CLI that produces deterministic repositor
 
 RepoInsight requires Python 3.11 or newer.
 
-The commands below install separately published packages, not this local 1.2.0
-candidate. The current published GitHub release is
-[1.1.0](https://github.com/HHP8/RepoInsight/releases/tag/v1.1.0); its optional AI
-guidance is experimental and it has no comparison command. PyPI publication is
-separate. For candidate validation, install a reviewed locally built wheel into
-a disposable environment, following the [release checklist](docs/release.md).
-
-Install the current stable release from [PyPI](https://pypi.org/project/repoinsight/) with
-`pipx` so the command runs in an isolated environment:
+Download the 1.2.0 wheel and `SHA256SUMS` from the
+[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.2.0), verify
+the checksum, and install the downloaded wheel in an isolated environment:
 
 ```console
-pipx install repoinsight
-repoinsight version
+python -m venv .venv
+# Windows:
+.venv\Scripts\python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
+.venv\Scripts\repoinsight version
+# macOS/Linux:
+.venv/bin/python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
+.venv/bin/repoinsight version
 ```
 
-Upgrade an existing `pipx` installation with:
-
-```console
-pipx upgrade repoinsight
-```
-
-Alternatively, install RepoInsight into the current Python environment:
-
-```console
-python -m pip install repoinsight
-repoinsight version
-```
-
-RepoInsight 1.0.0 is also available from its
-[GitHub Release](https://github.com/HHP8/RepoInsight/releases/tag/v1.0.0).
+The GitHub release provides the wheel, source archive and checksums.
+GitHub release publication and PyPI publication are separate; installing `repoinsight` by name from PyPI may
+select an older version without comparison. This release does not publish to PyPI.
+For source development, use the instructions below.
 
 ## Quick start
 
@@ -116,12 +103,12 @@ The standard test suite needs no network access. The 100,000-line benchmark and 
 
 The optional experimental implementation can explain a saved report and suggest
 up to two evidence-linked actions. The published 1.0.0 package has no `enrich`.
-For 1.1.0, download the wheel from the
-[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.1.0) and install
+For 1.2.0, download the wheel from the
+[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.2.0) and install
 it locally; GitHub release publication and PyPI publication are separate:
 
 ```console
-python -m pip install './repoinsight-1.1.0-py3-none-any.whl[ai]'
+python -m pip install './repoinsight-1.2.0-py3-none-any.whl[ai]'
 ```
 
 From a source checkout, install the optional transport with:
@@ -141,7 +128,7 @@ prints the exact JSON request; only `--send` transmits selected static evidence.
 Source code, repository identity, Git identities, paths, and repository prose are
 omitted from that request. Paths appear locally in the separate AI JSON/HTML reports.
 Existing saved reports and static scores stay unchanged. New static reports identify
-the producing tool as 1.1.0; schema and score-contract identifiers remain 1.0.
+the producing tool as 1.2.0; schema and score-contract identifiers remain 1.0.
 AI guidance may fail after a paid request when reasoning exhausts the output cap.
 The default 1500-token cap does not guarantee complete JSON. See the
 [workflow](docs/examples/ai-guidance.md) and

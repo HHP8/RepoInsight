@@ -1,9 +1,9 @@
-# Draft local release notes: RepoInsight 1.2.0
+# RepoInsight 1.2.0 — 2026-10-20
 
-**Unreleased, local and uncommitted candidate.** Not approved for publication,
-signed or validated across the candidate platform matrix. The published release
-remains 1.1.0 and its package has no comparison command. These notes are local
-preparation only; no GitHub draft or release has been created.
+Offline saved-report comparison is added in 1.2.0. Version 1.1.0 has no comparison
+command. The experimental AI behavior and its existing limitations are unchanged.
+GitHub release assets provide the wheel, source archive and checksums.
+PyPI publication is separate and is not included.
 
 Compare two saved reports without scanning repositories or using AI:
 
@@ -38,6 +38,11 @@ or new paid evaluation is included. Historical 1.1.0 AI caveats and evidence rem
 applicable and immutable. See the [comparison guide](comparison.md),
 [examples](examples/report-comparison.md) and [release checklist](release.md).
 
-Local validation results and remaining platform/publication decisions will be
-recorded in the ignored candidate checkpoint and sanitized review handoff. Earlier
-main CI is baseline proof only; candidate platform CI needs separate approval.
+Implementation platform validation passed all 12 OS/Python cells and quality on
+[candidate CI](https://github.com/HHP8/RepoInsight/actions/runs/37995687225) and
+[main CI](https://github.com/HHP8/RepoInsight/actions/runs/37998558157) for `25ae05f`: 588 passed and one optional benchmark skip per cell.
+Windows named link passes were inferred from quiet logs using matching source and
+collection order. These runs precede the final release-document changes; final
+commit CI, signing, tag build and uploaded-asset checks are recorded separately
+in the release checkpoint. No live AI generation or new usefulness rating was
+performed for this release.

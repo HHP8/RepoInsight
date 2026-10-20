@@ -1,8 +1,8 @@
 # Before/after saved-report examples
 
-Synthetic examples of the local uncommitted 1.2.0 candidate; no new runtime,
-release or live-AI proof. See the [comparison contract](../comparison.md).
-The published 1.1.0 package has no comparison command. Tool 1.0.0/1.1.0/1.2.0
+Synthetic examples of RepoInsight 1.2.0 comparison; examples do not prove
+runtime improvements or AI quality. See the [comparison contract](../comparison.md).
+Version 1.1.0 has no comparison command. Tool 1.0.0/1.1.0/1.2.0
 reports are supported; all examples retain contract 1.0.
 
 Comparing otherwise equal tool 1.1.0 and 1.2.0 reports preserves zero observed
