@@ -9,9 +9,9 @@
 
 The optional AI MVP is implemented and the owner accepted its experimental
 limitations on 2026-10-07; see [release acceptance](ai-release-acceptance-2026-10-07.md).
-Version 1.1.0 contains the optional AI guidance; the published 1.0.0 package
-has no enrichment. See the [README](../README.md#experimental-ai-guidance-110)
-for release-wheel installation; PyPI publication is a separate action. The proposal/estimates below are historical; its implementation
+AI guidance was introduced in 1.1.0 and is included in published 1.2.0; the historical
+1.0.0 package has no enrichment. See the [README](../README.md#experimental-ai-guidance)
+for current PyPI installation. The proposal/estimates below are historical; its implementation
 uses prompt 1.3, offline preview, explicit send, minimized saved-report evidence,
 separate sidecars and process-environment credentials. No key is bundled or saved.
 Explicit send authenticates with the provider via certificate-verified HTTPS.

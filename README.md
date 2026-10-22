@@ -36,6 +36,8 @@ For the commands below, Windows users should replace `python` with
 `.\.venv\Scripts\python.exe` and `repoinsight` with `.\.venv\Scripts\repoinsight.exe`;
 activation is not needed. On macOS/Linux, `.venv/bin/python` and
 `.venv/bin/repoinsight` also work without activation.
+Run the examples from this environment's folder; pass your project directory to
+`analyze` rather than changing folders.
 
 To install the exact 1.2.0 release instead:
 
@@ -52,22 +54,41 @@ python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
 repoinsight version
 ```
 
-See [Experimental AI guidance](#experimental-ai-guidance-110) for optional AI
+See [Experimental AI guidance](#experimental-ai-guidance) for optional AI
 dependencies, or [Development from a source checkout](#development-from-a-source-checkout)
 for an editable developer installation.
 
 ## Quick start
 
 ```console
-repoinsight analyze .
-repoinsight analyze . --output reports --format all
-repoinsight analyze https://github.com/pypa/sampleproject --output reports
-repoinsight analyze . --fail-under 80
+repoinsight analyze "PATH_TO_PROJECT" --output before --format all
+```
+
+Replace `PATH_TO_PROJECT` with your project directory. Review the findings, make
+your chosen change yourself, and independently verify it with appropriate tests
+or other checks. RepoInsight does not make or verify the change. Then:
+
+```console
+repoinsight analyze "PATH_TO_PROJECT" --output after --format all
+repoinsight compare before/repoinsight-report.json after/repoinsight-report.json
+```
+
+Comparing saved reports is offline and makes no AI request. Check completeness
+and compatibility warnings; a higher score or missing finding does not prove a
+fix. See the [improvement walkthrough](docs/examples/improve-a-repository.md).
+
+Other commands:
+
+```console
+repoinsight analyze "PATH_TO_PROJECT" --fail-under 80
 repoinsight rules
 repoinsight explain RI-SEC-001
 ```
 
-`analyze` prints a compact terminal summary. JSON and HTML output default to `repoinsight-report/`. The HTML file has no server or network dependency.
+`analyze` makes no AI request and prints a compact terminal summary. Report files
+are `repoinsight-report.json` and `repoinsight-report.html`; the default directory
+is `repoinsight-report/`. The HTML report works offline. Analyzing a public GitHub
+URL additionally requires Git and network access; see the [CLI reference](docs/cli.md).
 
 ## Safety and privacy
 
@@ -94,7 +115,8 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 
 ## Development from a source checkout
 
-Use an editable installation with the development dependency group. On Windows:
+Use an editable installation with the development dependency group. Upgrade pip
+first so it supports `--group dev` (pip 25.1 or newer). On Windows PowerShell:
 
 This source checkout identifies new reports as tool 1.2.0 and accepts saved
 1.0.0, 1.1.0 and 1.2.0 reports. Static schema/scoring and comparison contracts
@@ -103,17 +125,19 @@ updated packaged schemas; unknown future tool versions remain unsupported.
 
 ```console
 python -m venv .venv
-.venv\Scripts\python -m pip install -e . --group dev
-.venv\Scripts\python -m pytest -q
-.venv\Scripts\python -m ruff format --check .
-.venv\Scripts\python -m ruff check .
-.venv\Scripts\python -m mypy src tests tools benchmarks
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -e . --group dev
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff format --check .
+.\.venv\Scripts\python.exe -m ruff check .
+.\.venv\Scripts\python.exe -m mypy src tests tools benchmarks
 ```
 
 On macOS or Linux:
 
 ```console
 python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e . --group dev
 .venv/bin/python -m pytest -q
 .venv/bin/python -m ruff format --check .
@@ -123,40 +147,40 @@ python3 -m venv .venv
 
 The standard test suite needs no network access. The 100,000-line benchmark and live public-repository smoke are opt-in. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Experimental AI guidance (1.1.0)
+<a id="experimental-ai-guidance-110"></a>
 
-The optional experimental implementation can explain a saved report and suggest
-up to two evidence-linked actions. The published 1.0.0 package has no `enrich`.
-Version 1.2.0 is available on PyPI. In the same virtual environment, install the
-optional AI dependencies:
+## Experimental AI guidance
+
+AI guidance was introduced in 1.1.0 and is included in 1.2.0; installing an older
+version is unnecessary. It is experimental, advisory, and may be wrong. It can
+explain a saved report and suggest up to two evidence-linked actions, without
+modifying source, running tests, or changing static scores.
+
+**Offline preview:** the base installation is sufficient; no API key or optional
+HTTPX dependency is needed. `MODEL_ID` is a placeholder for an OpenAI Responses
+API model with Structured Outputs; preview does not check account access.
+
+```console
+repoinsight enrich before/repoinsight-report.json --preview --model MODEL_ID
+```
+
+**Optional live support:** install the extra in the same environment:
 
 ```console
 python -m pip install --upgrade "repoinsight[ai]"
 ```
 
-Developers can instead install the optional transport from a source checkout with
-`python -m pip install -e ".[ai]"`. Then preview a saved report or explicitly send it:
-
-```console
-repoinsight analyze . --output reports
-repoinsight enrich reports/repoinsight-report.json --preview --model MODEL_ID
-repoinsight enrich reports/repoinsight-report.json --send --model MODEL_ID --output ai-reports
-```
-
-Replace `MODEL_ID` with a model available to your account that supports the OpenAI
-Responses API and Structured Outputs. Installation and preview require no API key;
-live `--send` mode requires `OPENAI_API_KEY` supplied only through the local process
-environment. Do not put key values in source, application
-settings or reports. Release and CI validation need no personal API key. Preview requires no key or network access and
-prints the exact JSON request; only `--send` transmits selected static evidence.
-Source code, repository identity, Git identities, paths, and repository prose are
-omitted from that request. Paths appear locally in the separate AI JSON/HTML reports.
-Existing saved reports and static scores stay unchanged. New static reports identify
-the producing tool as 1.2.0; schema and score-contract identifiers remain 1.0.
-AI guidance may fail after a paid request when reasoning exhausts the output cap.
-The default 1500-token cap does not guarantee complete JSON. See the
-[workflow](docs/examples/ai-guidance.md) and
-[privacy details](docs/security.md#experimental-ai-enrichment).
+Only `enrich --send` sends selected evidence. It additionally requires
+`OPENAI_API_KEY` in the process environment and an accessible compatible model.
+The [AI walkthrough](docs/examples/ai-guidance.md#optional-live-send) separates the
+paid send step from offline preview and explains setup and JSON/HTML output paths.
+Live requests can incur charges and fail after spending tokens, including under
+the default 1500-output-token cap; see [budgets and retries](docs/examples/ai-guidance.md#budgets-retries-and-troubleshooting).
+Source, identities, paths and repository prose are omitted from the request;
+selected static evidence can still be sensitive. Keep credentials out of commands,
+source, settings and reports; authentication sends the key only to the provider
+over verified HTTPS. See [privacy boundaries](docs/security.md#experimental-ai-enrichment).
+Package/tool version 1.2.0 is independent of schema and score-contract versions 1.0.
 
 ## License
 

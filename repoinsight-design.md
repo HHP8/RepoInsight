@@ -4,11 +4,11 @@
 **Date:** 2026-08-23  
 **Target:** Version 1.0  
 
-**Post-1.0 implementation note:** The development checkout now implements optional
-saved-report AI enrichment described in the [upgrade plan](docs/upgrade-plan.md).
+**Post-1.0 implementation note:** Optional saved-report AI enrichment was introduced
+in 1.1.0 and is included in published 1.2.0; see the [upgrade plan](docs/upgrade-plan.md).
 It creates an explicit `enrich --send` exception to the external-transmission
 boundary below. The version 1 baseline and static scoring/JSON contracts remain
-unchanged. See [AI security and privacy](docs/security.md#optional-ai-enrichment-development-checkout).
+unchanged. See [AI security and privacy](docs/security.md#experimental-ai-enrichment).
 
 ## 1. Purpose
 

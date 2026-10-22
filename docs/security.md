@@ -26,12 +26,15 @@ Follow [SECURITY.md](../SECURITY.md). Do not include real credentials, private r
 
 ## Experimental AI enrichment
 
-The experimental `enrich` command creates an explicit exception to version 1's
-offline analysis boundary. `analyze` remains static and does not call AI. Only
+The experimental `enrich` command adds an explicit transmission mode for saved
+static reports. `analyze` remains static and does not call AI (remote
+GitHub acquisition still needs Git and network access). Only
 `enrich --send` transmits data; a saved key or repository TOML cannot enable it.
 `enrich --preview --model MODEL_ID` prints the complete request without a key or
-network access. Optional AI guidance is included in 1.1.0; the published 1.0.0
-package has no enrichment.
+network access or the optional HTTPX dependency. AI guidance was introduced in
+1.1.0 and is included in published 1.2.0; the historical 1.0.0 package has no
+enrichment. Only live send requires the AI extra, an accessible compatible model
+and `OPENAI_API_KEY`. See the [walkthrough](examples/ai-guidance.md).
 
 The outbound projection contains trusted built-in rule descriptions, rule IDs,
 severity/confidence, numeric scores, selected numeric/boolean aggregate metrics,
