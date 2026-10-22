@@ -4,9 +4,15 @@ Thank you for improving RepoInsight. Open a focused issue before a large behavio
 
 ## Setup
 
+Follow the [platform setup](README.md#development-from-a-source-checkout) from
+the checkout root. It creates `.venv`, upgrades pip to support `--group dev`
+(pip 25.1+), and installs the editable package and development dependencies.
+Then use that environment for the checks below: on Windows PowerShell, replace
+`python` with `.\.venv\Scripts\python.exe`; on macOS/Linux, use
+`.venv/bin/python`. Activation-policy changes and administrator access are not
+needed.
+
 ```console
-python -m venv .venv
-python -m pip install -e . --group dev
 python -m pytest -q
 python -m ruff format --check .
 python -m ruff check .

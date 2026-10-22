@@ -4,10 +4,16 @@ This reference covers RepoInsight 1.2.0. Version 1.1.0 has no `compare` command.
 New reports
 use tool 1.2.0; saved 1.0.0/1.1.0/1.2.0 reports are supported, with contracts 1.0.
 Unknown future tool versions fail safely; older strict validators need updated schemas.
+Install the [published package](../README.md#install) and use that virtual
+environment for these commands, including the Windows executable paths shown there.
 
 ## `repoinsight analyze SOURCE`
 
-Analyze a local directory or public GitHub HTTPS URL.
+Analyze a local directory or public GitHub HTTPS URL without making an AI request.
+Local analysis does not need network access. A public GitHub URL requires both
+Git and network access. Outputs are `repoinsight-report.json` and/or
+`repoinsight-report.html` in `--output` (default `repoinsight-report/`, with both
+formats by default unless configuration overrides it).
 
 | Option | Meaning |
 |---|---|
@@ -50,8 +56,11 @@ Print the package and public JSON Schema versions.
 ## `repoinsight enrich REPORT` (experimental)
 
 Explain an existing v1 JSON report without reading or executing current repository
-source. This command is implemented for the next release and is not available in
-the published 1.0.0 package. Require exactly one consent mode and an explicit model.
+source. Introduced in 1.1.0, it is included in the published 1.2.0 package; no
+checkout or older installation is needed. Require exactly one consent mode and
+an explicit model. `MODEL_ID` is a placeholder: choose an accessible OpenAI
+Responses API model supporting Structured Outputs. Preview checks identifier
+syntax, not model availability or account access.
 
 | Option | Meaning |
 |---|---|
@@ -71,8 +80,16 @@ priority findings and then metrics are dropped until the request fits; omission
 counts are shown. A budget too small for the fixed envelope fails with code 20.
 Output text and the full provider response are bounded and validated.
 
+Offline preview (no key, HTTPX dependency or provider request):
+
 ```console
 repoinsight enrich reports/repoinsight-report.json --preview --model MODEL_ID
+```
+
+Optional paid send, only after reviewing the preview and completing the
+[live setup](examples/ai-guidance.md#optional-live-send):
+
+```console
 repoinsight enrich reports/repoinsight-report.json --send --model MODEL_ID --output ai-reports
 ```
 
@@ -81,17 +98,24 @@ With identical report bytes and options, preview shows the same request body tha
 send uses. Changing the file/options changes the request. Authorization headers
 are never printed. Send reads only `OPENAI_API_KEY` from the process environment;
 literal-key flags, TOML AI settings, endpoint overrides, and automatic source uploads
-are unsupported. Install the AI extra from this checkout before sending.
+are unsupported. Before sending, install the optional dependencies in the same
+environment with `python -m pip install --upgrade "repoinsight[ai]"` and supply
+`OPENAI_API_KEY` through the local process environment. Live requests can cost
+money and fail after spending tokens; see [budgets and retries](examples/ai-guidance.md#budgets-retries-and-troubleshooting).
 
-Outputs are `repoinsight-ai.json` and `repoinsight-ai.html`, each bound to the exact
+Send outputs under `--output` (default `repoinsight-ai/`) are
+`repoinsight-ai.json` and `repoinsight-ai.html`, each bound to the exact
 base report hash. The original report is never overwritten. AI status, usage when
 available, omitted evidence, timestamps, revision, and limitations are recorded.
 No current-source verification is performed. A sanitized failed-status record is
 written when possible for provider or guidance-validation failures; invalid usage
 does not send a request. Output failure takes code 23. AI output is advisory and
-does not affect `analyze --fail-under`.
+does not affect `analyze --fail-under`, modify source or run tests. Preview prints
+the request; it does not produce AI guidance sidecars.
 
-## `repoinsight compare BEFORE.json AFTER.json` (1.2.0)
+<a id="repoinsight-compare-beforejson-afterjson-120"></a>
+
+## `repoinsight compare BEFORE.json AFTER.json`
 
 The offline comparison command reads saved v1 reports without repository
 scans or AI. It is not in the published 1.1.0 release. `--format terminal|json`
