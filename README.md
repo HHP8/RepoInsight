@@ -11,26 +11,50 @@ RepoInsight is a cross-platform Python CLI that produces deterministic repositor
 
 ## Install
 
-RepoInsight requires Python 3.11 or newer.
+RepoInsight requires **Python 3.11+**. Install from
+[production PyPI](https://pypi.org/project/repoinsight/) in a virtual environment.
+Installation and static analysis require no OpenAI API key.
 
-Download the 1.2.0 wheel and `SHA256SUMS` from the
-[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.2.0), verify
-the checksum, and install the downloaded wheel in an isolated environment:
+On Windows PowerShell:
 
-```console
+```powershell
 python -m venv .venv
-# Windows:
-.venv\Scripts\python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
-.venv\Scripts\repoinsight version
-# macOS/Linux:
-.venv/bin/python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
-.venv/bin/repoinsight version
+.\.venv\Scripts\python.exe -m pip install --upgrade repoinsight
+.\.venv\Scripts\repoinsight.exe version
 ```
 
-The GitHub release provides the wheel, source archive and checksums.
-GitHub release publication and PyPI publication are separate; installing `repoinsight` by name from PyPI may
-select an older version without comparison. This release does not publish to PyPI.
-For source development, use the instructions below.
+On macOS/Linux:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade repoinsight
+repoinsight version
+```
+
+For the commands below, Windows users should replace `python` with
+`.\.venv\Scripts\python.exe` and `repoinsight` with `.\.venv\Scripts\repoinsight.exe`;
+activation is not needed. On macOS/Linux, `.venv/bin/python` and
+`.venv/bin/repoinsight` also work without activation.
+
+To install the exact 1.2.0 release instead:
+
+```console
+python -m pip install "repoinsight==1.2.0"
+```
+
+Alternatively, download the 1.2.0 wheel and `SHA256SUMS` from the
+[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.2.0), verify
+the checksum, and install the downloaded wheel in the same environment:
+
+```console
+python -m pip install ./repoinsight-1.2.0-py3-none-any.whl
+repoinsight version
+```
+
+See [Experimental AI guidance](#experimental-ai-guidance-110) for optional AI
+dependencies, or [Development from a source checkout](#development-from-a-source-checkout)
+for an editable developer installation.
 
 ## Quick start
 
@@ -103,26 +127,26 @@ The standard test suite needs no network access. The 100,000-line benchmark and 
 
 The optional experimental implementation can explain a saved report and suggest
 up to two evidence-linked actions. The published 1.0.0 package has no `enrich`.
-For 1.2.0, download the wheel from the
-[GitHub release](https://github.com/HHP8/RepoInsight/releases/tag/v1.2.0) and install
-it locally; GitHub release publication and PyPI publication are separate:
+Version 1.2.0 is available on PyPI. In the same virtual environment, install the
+optional AI dependencies:
 
 ```console
-python -m pip install './repoinsight-1.2.0-py3-none-any.whl[ai]'
+python -m pip install --upgrade "repoinsight[ai]"
 ```
 
-From a source checkout, install the optional transport with:
+Developers can instead install the optional transport from a source checkout with
+`python -m pip install -e ".[ai]"`. Then preview a saved report or explicitly send it:
 
 ```console
-python -m pip install -e '.[ai]'
 repoinsight analyze . --output reports
 repoinsight enrich reports/repoinsight-report.json --preview --model MODEL_ID
 repoinsight enrich reports/repoinsight-report.json --send --model MODEL_ID --output ai-reports
 ```
 
 Replace `MODEL_ID` with a model available to your account that supports the OpenAI
-Responses API and Structured Outputs. Supply `OPENAI_API_KEY` only through the local process
-environment before send mode. Do not put key values in source, application
+Responses API and Structured Outputs. Installation and preview require no API key;
+live `--send` mode requires `OPENAI_API_KEY` supplied only through the local process
+environment. Do not put key values in source, application
 settings or reports. Release and CI validation need no personal API key. Preview requires no key or network access and
 prints the exact JSON request; only `--send` transmits selected static evidence.
 Source code, repository identity, Git identities, paths, and repository prose are
