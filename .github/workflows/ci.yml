@@ -39,7 +39,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e . --group dev
       - run: python -m pytest -q --cov=repoinsight --cov-branch --cov-report=term-missing --cov-report=xml
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: matrix.os == 'ubuntu-latest' && matrix.python == '3.11'
         with:
           name: coverage
