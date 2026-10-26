@@ -98,6 +98,7 @@ Version 1 does not defend against a concurrent privileged local attacker, a comp
 
 ## Documentation
 
+- [First health report: find a missing README (beginner tutorial and video)](docs/tutorials/first-health-report/README.md)
 - [CLI reference](docs/cli.md)
 - [Configuration](docs/configuration.md)
 - [Rules](docs/rules.md)
